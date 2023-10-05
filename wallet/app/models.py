@@ -6,3 +6,15 @@ class Asset(models.Model):
   category = models.CharField(max_length=32, null=True)
   sub_category = models.CharField(max_length=32, null=True)
   ipo_date = models.DateField(null=True)
+
+class AssetPrice(models.Model):
+  ticker = models.CharField(max_length=6)
+  date = models.DateField()
+  open = models.FloatField(null=True)
+  high = models.FloatField(null=True)
+  low = models.FloatField(null=True)
+  close = models.FloatField()
+  class Meta:
+    constraints = [
+        models.UniqueConstraint(fields=['ticker', 'date'], name='unique_ticker_date')
+    ]
