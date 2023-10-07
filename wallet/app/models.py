@@ -6,7 +6,7 @@ class Asset(models.Model):
   trading_name = models.CharField(max_length=32, null=True)
   cvm_code = models.CharField(max_length=8, null=True)
   cnpj = models.CharField(max_length=18, null=True)
-  assert_class = models.CharField(max_length=32, null=True)
+  asset_class = models.CharField(max_length=32, null=True)
   category = models.CharField(max_length=32, null=True)
   sub_category = models.CharField(max_length=32, null=True)
   ipo_date = models.DateField(null=True)

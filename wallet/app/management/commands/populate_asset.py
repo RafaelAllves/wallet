@@ -44,12 +44,12 @@ class Command(BaseCommand):
           name = asset_data[1]
           assets = Asset.objects.filter(ticker=ticker)
           if not assets.exists():
-            new_asset = Asset(ticker=ticker, assert_class='FII', trading_name=name)
+            new_asset = Asset(ticker=ticker, asset_class='FII', trading_name=name)
             new_asset.save()
             print(f'{ticker} added')
           else:
             for asset in assets:
-              asset.assert_class = 'FII'
+              asset.asset_class = 'FII'
               asset.trading_name = name
               asset.save()
               print(f'{ticker} update')
