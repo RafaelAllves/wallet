@@ -1,19 +1,13 @@
 'use client'
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Stock from '../../../components/charts/stock';
 
-
 const TickerChart: React.FC<any> = ({ params }) => {
-
   const { ticker } = params;
 
-  useEffect(()=> {
-    console.log(ticker)
-  }, [ticker])
-  
   return (
-    <Stock/>
+    <Stock ticker={ticker}/>
   );
 };
 
