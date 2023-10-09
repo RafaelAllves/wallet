@@ -21,4 +21,5 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('assets', views.asset, name='asset'),
+    path('asset/<str:ticker>/', views.asset_prices, name='prices'),
 ]
