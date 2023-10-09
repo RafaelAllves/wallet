@@ -12,7 +12,7 @@ class Asset(models.Model):
   ipo_date = models.DateField(null=True)
 
 class AssetPrice(models.Model):
-  ticker = models.CharField(max_length=6)
+  ticker = models.CharField(max_length=8)
   date = models.DateField()
   open = models.FloatField(null=True)
   low = models.FloatField(null=True)
