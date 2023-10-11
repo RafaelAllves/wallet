@@ -55,8 +55,8 @@ class Command(BaseCommand):
         print('real estate:   ', len(new_data))
         AssetPrice.objects.bulk_create(new_data)
 
-    data_inicio = datetime(2023, 10, 1)
-    data_fim = datetime(2023, 10, 30)
+    data_inicio = datetime(2023, 10, 8)
+    data_fim = datetime(2023, 10, 10)
 
     while data_inicio <= data_fim:
 
