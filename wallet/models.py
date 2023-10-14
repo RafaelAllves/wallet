@@ -32,7 +32,7 @@ class Order(models.Model):
   maturity_date = models.DateField(null=True)
   index = models.CharField(max_length=1, choices=INDEX_CHOICES, null=True)
 
-  user = models.OneToOneField(User)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):
     return self.name
