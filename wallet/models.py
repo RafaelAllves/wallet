@@ -23,7 +23,7 @@ class Order(models.Model):
   name = models.CharField(max_length=32)
   broker = models.CharField(max_length=32)
   asset_type = models.CharField(max_length=3, choices=ASSET_TYPES)
-  order_type = models.CharField(max_length=4, choices=ORDER_TYPES)
+  order_type = models.IntegerField(choices=ORDER_TYPES)
   date = models.DateField()
   price = models.DecimalField(max_digits=8, decimal_places=2)
   volume = models.DecimalField(max_digits=8, decimal_places=4)
