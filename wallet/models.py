@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Order(models.Model):
   ASSET_TYPES = [
@@ -30,6 +31,8 @@ class Order(models.Model):
   interest_rate = models.DecimalField(max_digits=8, decimal_places=5, null=True)
   maturity_date = models.DateField(null=True)
   index = models.CharField(max_length=1, choices=INDEX_CHOICES, null=True)
+
+  user = models.OneToOneField(User)
 
   def __str__(self):
     return self.name
