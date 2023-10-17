@@ -9,6 +9,8 @@ interface PositionTableProps {
 
 
 const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
+
+  if(!assets) return;
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredAssets = assets.filter((asset) =>

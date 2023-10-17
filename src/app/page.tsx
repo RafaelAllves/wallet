@@ -19,7 +19,7 @@ export default function Home() {
     <main className="flex h-screen flex-col">
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <AssetClasses/>
+          <AssetClasses asset_classes={data.asset_classes}/>
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex h-1/4 items-center justify-center">
@@ -32,7 +32,7 @@ export default function Home() {
       </div>
       <div className="flex justify-center py-20">
         
-        <PositionTable assets={data}/>
+        <PositionTable assets={data.assets}/>
       </div>
     </main>
   )
