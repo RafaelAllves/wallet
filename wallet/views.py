@@ -9,29 +9,36 @@ import pandas as pd
 def position(request, user):
   orders = Order.objects.filter(user=user)
   assets = {}
+  asset_classes = {}
   for order in orders:
     asset_name = order.name
     volume = order.volume
     cost = order.price
 
     if asset_name in assets:
-        assets[asset_name]["volume"] += int(volume)
-        assets[asset_name]["cost"] += cost
+      assets[asset_name]["volume"] += int(volume)
+      assets[asset_name]["cost"] += cost
     else:
-        latest_price = AssetPrice.objects.filter(ticker = asset_name).last()
-        asset = Asset.objects.get(ticker = asset_name)
-        assets[asset_name] = {
-            "name": asset_name,
-            "asset_class": asset.asset_class,
-            "category": asset.category,
-            "sub_category": asset.sub_category,
-            "volume": int(volume),
-            "cost": cost,
-            "price": latest_price.close if latest_price else None
-        }
+      latest_price = AssetPrice.objects.filter(ticker = asset_name).last()
+      asset = Asset.objects.get(ticker = asset_name)
+      assets[asset_name] = {
+        "name": asset_name,
+        "asset_class": asset.asset_class,
+        "category": asset.category,
+        "sub_category": asset.sub_category,
+        "volume": int(volume),
+        "cost": cost,
+        "price": latest_price.close if latest_price else None
+      }
+
+    if assets[asset_name]["asset_class"] in asset_classes:
+      asset_classes[assets[asset_name]["asset_class"]]["value"] += int(volume) * assets[asset_name]["price"]
+    else:
+      asset_classes[assets[asset_name]["asset_class"]] = {
+        "value": (assets[asset_name]["price"] * int(volume))
+      }
 
   df = pd.DataFrame(assets.values())
-  print(df.values.tolist())
 
-  return JsonResponse(df.values.tolist(), safe=False)
+  return JsonResponse({"assets": df.values.tolist(), "asset_classes": asset_classes}, safe=False)
 
