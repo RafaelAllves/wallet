@@ -36,3 +36,17 @@ class Order(models.Model):
 
   def __str__(self):
     return self.name
+
+
+class AssetConsolidatedValue(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  name = models.CharField(max_length=32)
+  date = models.DateField()
+  value = models.DecimalField(max_digits=10, decimal_places=2)
+  volume = models.DecimalField(max_digits=8, decimal_places=4)
+
+  def __str__(self):
+    return f"{self.user} - {self.name} - {self.date}"
+
+  class Meta:
+    unique_together = ['user', 'name', 'date']
