@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +13,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import axios from 'axios';
+
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +29,11 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  elements: {
+    point: {
+      radius: 0,
+    }
+  },
   plugins: {
     legend: {
       position: 'top' as const,
@@ -38,28 +45,33 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: 'applied',
-      data: [6, 12, 16, 18, 20, 24, 37],
-      borderColor: 'rgb(2, 48, 71)',
-      backgroundColor: 'rgba(2, 48, 71, 1)',
-    },
-    {
-      fill: true,
-      label: 'gross',
-      data: [6, 13, 18, 22, 27, 31, 42],
-      borderColor: 'rgb(255, 183, 3)',
-      backgroundColor: 'rgba(255, 183, 3, 1)',
-    },
-  ],
-};
-
 export function Patrimony() {
-  return <Line options={options} data={data} />;
+  const [data, setData] = useState<any>([]);
+
+  useEffect(()=> {
+    axios.get(`http://127.0.0.1:8000/position-history/1`).then(response => {
+      setData(response.data)
+    })
+  }, [])
+
+
+  return <Line options={options} data={{
+    labels: data.labels,
+    datasets: [
+      // {
+      //   fill: true,
+      //   label: 'applied',
+      //   data: [6, 12, 16, 18, 20, 24, 37],
+      //   borderColor: 'rgb(2, 48, 71)',
+      //   backgroundColor: 'rgba(2, 48, 71, 1)',
+      // },
+      {
+        fill: true,
+        label: 'gross',
+        data: data.values,
+        borderColor: 'rgb(255, 183, 3)',
+        backgroundColor: 'rgba(255, 183, 3, 1)',
+      },
+    ],
+  }} />;
 }
