@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from app.models import AssetPrice
-from app.models import Asset
+from app.models import AssetPrice, Asset
+from wallet.models import AssetConsolidatedValue
+from dateutil.relativedelta import relativedelta
+from django.utils import timezone
 from .models import Order
 import pandas as pd
 
@@ -42,3 +44,16 @@ def position(request, user):
 
   return JsonResponse({"assets": df.values.tolist(), "asset_classes": asset_classes}, safe=False)
 
+
+def position_history(request, user):
+
+  asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
+  df = pd.DataFrame(asset_consolidated_values.values())
+  df = df[['date', 'value']]
+  df['date'] = pd.to_datetime(df['date'])
+
+  grouped = df.groupby('date').agg({'value': 'sum'}).reset_index()
+  grouped['date'] = grouped['date'].dt.strftime('%d/%m/%Y')
+  grouped['value'] = grouped['value'].astype(float)
+
+  return JsonResponse({"labels": grouped['date'].values.tolist(), "values": grouped['value'].values.tolist()}, safe=False)

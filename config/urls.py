@@ -24,4 +24,5 @@ urlpatterns = [
     path('assets', asset_views.asset, name='asset'),
     path('asset/<str:ticker>/', asset_views.asset_prices, name='prices'),
     path('position/<str:user>/', wallet_views.position, name='position'),
+    path('position-history/<str:user>/', wallet_views.position_history, name='position_history'),
 ]
