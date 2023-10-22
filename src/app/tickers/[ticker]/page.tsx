@@ -7,13 +7,9 @@ import { Patrimony } from '../../../components/charts/patrimony';
 
 const TickerChart: React.FC<any> = ({ params }) => {
   const { ticker } = params;
-  const [data, setData] = useState<any>([]);
   const [dataPatrimony, setDataPatrimony] = useState<any>([]);
 
   useEffect(()=> {
-    axios.get(`http://127.0.0.1:8000/position/1/${ticker}`).then(response => {
-      setData(response.data)
-    })
     axios.get(`http://127.0.0.1:8000/position-history/1`, {params: {ticker}}).then(response => {
       setDataPatrimony(response.data)
     })
