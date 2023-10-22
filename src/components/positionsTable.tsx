@@ -1,4 +1,4 @@
-'use client'
+
 import React, { useState } from 'react';
 
 type AssetArray = Array<string | number>;
@@ -10,8 +10,9 @@ interface PositionTableProps {
 
 const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
 
-  if(!assets) return;
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  if(!assets) return;
 
   const filteredAssets = assets.filter((asset) =>
     asset[0].toString().toLowerCase().includes(searchQuery.toLowerCase())
