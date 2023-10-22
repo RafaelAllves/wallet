@@ -44,6 +44,7 @@ class AssetConsolidatedValue(models.Model):
   date = models.DateField()
   value = models.DecimalField(max_digits=10, decimal_places=2)
   volume = models.DecimalField(max_digits=8, decimal_places=4)
+  invested = models.DecimalField(max_digits=10, decimal_places=2)
 
   def __str__(self):
     return f"{self.user} - {self.name} - {self.date}"
