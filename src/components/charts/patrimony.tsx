@@ -1,6 +1,4 @@
-'use client'
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +11,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import axios from 'axios';
 
 
 ChartJS.register(
@@ -48,15 +45,15 @@ export const options = {
   },
 };
 
-export function Patrimony() {
-  const [data, setData] = useState<any>([]);
+interface PatrimonyProps {
+  data: {
+    labels: string[],
+    values: number[],
+    invested: number[]
+  };
+}
 
-  useEffect(()=> {
-    axios.get(`http://127.0.0.1:8000/position-history/1`).then(response => {
-      setData(response.data)
-    })
-  }, [])
-
+export const Patrimony: React.FC<PatrimonyProps> = ({ data }) => {
 
   return <Line options={options} data={{
     labels: data.labels,
