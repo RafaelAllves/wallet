@@ -19,7 +19,7 @@ def position(request, user):
 
     if asset_name in assets:
       assets[asset_name]["volume"] += int(volume)
-      assets[asset_name]["cost"] += cost
+      assets[asset_name]["cost"] += cost * int(volume)
     else:
       latest_price = AssetPrice.objects.filter(ticker = asset_name).last()
       asset = Asset.objects.get(ticker = asset_name)
@@ -29,7 +29,7 @@ def position(request, user):
         "category": asset.category,
         "sub_category": asset.sub_category,
         "volume": int(volume),
-        "cost": cost,
+        "cost": cost * int(volume),
         "price": latest_price.close if latest_price else None
       }
 
@@ -49,11 +49,12 @@ def position_history(request, user):
 
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
   df = pd.DataFrame(asset_consolidated_values.values())
-  df = df[['date', 'value']]
+  df = df[['date', 'value', 'invested']]
   df['date'] = pd.to_datetime(df['date'])
 
-  grouped = df.groupby('date').agg({'value': 'sum'}).reset_index()
+  grouped = df.groupby('date').agg({'value': 'sum', 'invested': 'sum'}).reset_index()
   grouped['date'] = grouped['date'].dt.strftime('%d/%m/%Y')
   grouped['value'] = grouped['value'].astype(float)
+  grouped['invested'] = grouped['invested'].astype(float)
 
-  return JsonResponse({"labels": grouped['date'].values.tolist(), "values": grouped['value'].values.tolist()}, safe=False)
+  return JsonResponse({"labels": grouped['date'].values.tolist(), "values": grouped['value'].values.tolist(), "invested": grouped['invested'].values.tolist()}, safe=False)
