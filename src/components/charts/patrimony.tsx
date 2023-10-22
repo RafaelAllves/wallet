@@ -42,6 +42,9 @@ export const options = {
       display: true,
       text: 'Chart.js Line Chart',
     },
+    tooltip: {
+      intersect: false
+    }
   },
 };
 
@@ -58,13 +61,13 @@ export function Patrimony() {
   return <Line options={options} data={{
     labels: data.labels,
     datasets: [
-      // {
-      //   fill: true,
-      //   label: 'applied',
-      //   data: [6, 12, 16, 18, 20, 24, 37],
-      //   borderColor: 'rgb(2, 48, 71)',
-      //   backgroundColor: 'rgba(2, 48, 71, 1)',
-      // },
+      {
+        fill: true,
+        label: 'invested',
+        data: data.invested,
+        borderColor: 'rgb(2, 48, 71)',
+        backgroundColor: 'rgba(2, 48, 71, 0.9)',
+      },
       {
         fill: true,
         label: 'gross',
