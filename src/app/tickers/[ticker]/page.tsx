@@ -8,10 +8,15 @@ import { Patrimony } from '../../../components/charts/patrimony';
 const TickerChart: React.FC<any> = ({ params }) => {
   const { ticker } = params;
   const [dataPatrimony, setDataPatrimony] = useState<any>([]);
+  const [dataStock, setDataStock] = useState<any>([]);
 
   useEffect(()=> {
     axios.get(`http://127.0.0.1:8000/position-history/1`, {params: {ticker}}).then(response => {
       setDataPatrimony(response.data)
+    })
+    axios.get(`http://127.0.0.1:8000/asset/${ticker}`).then(response => {
+      setDataStock(response.data)
+
     })
   }, [ticker])
 
@@ -20,7 +25,7 @@ const TickerChart: React.FC<any> = ({ params }) => {
       <div  className="flex h-1/2 w-1/2">
         <Patrimony data={dataPatrimony}/>
       </div>
-      <Stock ticker={ticker}/>
+      <Stock data={dataStock}/>
     </main>
   );
 };

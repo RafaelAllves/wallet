@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import HighchartsExporting from 'highcharts/modules/exporting'
-import axios from 'axios';
 import darkUnica from 'highcharts/themes/dark-unica';
-
 
 if (typeof Highcharts === 'object') {
   HighchartsExporting(Highcharts)
@@ -12,15 +10,11 @@ if (typeof Highcharts === 'object') {
 
 darkUnica(Highcharts);
 
-const Stock = ({ticker}:any) => {
-  const [data, setData] = useState<any>([]);
+interface StockProps {
+  data: number[][];
+}
 
-  useEffect(()=> {
-    axios.get(`http://127.0.0.1:8000/asset/${ticker}`).then(response => {
-      setData(response.data)
-    })
-  }, [ticker])
-
+const Stock: React.FC<StockProps> = ({ data }) => {
 
   const stockOptions = {
     yAxis: [{
@@ -36,7 +30,7 @@ const Stock = ({ticker}:any) => {
       // type: 'ohlc',
       type: 'areaspline',
       name: 'Preço',
-      id: ticker,
+      // id: ticker,
       fillColor: {
         linearGradient: {
           x1: 0,
