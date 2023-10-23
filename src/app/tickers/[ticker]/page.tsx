@@ -9,10 +9,16 @@ const TickerChart: React.FC<any> = ({ params }) => {
   const { ticker } = params;
   const [dataPatrimony, setDataPatrimony] = useState<any>([]);
   const [dataStock, setDataStock] = useState<any>([]);
+  const [startDate, setStartDate] = useState<any>([]);
 
   useEffect(()=> {
     axios.get(`http://127.0.0.1:8000/position-history/1`, {params: {ticker}}).then(response => {
       setDataPatrimony(response.data)
+      setStartDate(Date.UTC(
+        parseInt(response.data?.labels?.[0].split('/')[2], 10), 
+        parseInt(response.data?.labels?.[0].split('/')[1], 10), 
+        parseInt(response.data?.labels?.[0].split('/')[0], 10),
+      ))
     })
     axios.get(`http://127.0.0.1:8000/asset/${ticker}`).then(response => {
       setDataStock(response.data)
@@ -25,7 +31,7 @@ const TickerChart: React.FC<any> = ({ params }) => {
       <div  className="flex h-1/2 w-1/2">
         <Patrimony data={dataPatrimony}/>
       </div>
-      <Stock data={dataStock}/>
+      <Stock data={dataStock} startDate={startDate}/>
     </main>
   );
 };

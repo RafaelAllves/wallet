@@ -12,9 +12,10 @@ darkUnica(Highcharts);
 
 interface StockProps {
   data: number[][];
+  startDate: number;
 }
 
-const Stock: React.FC<StockProps> = ({ data }) => {
+const Stock: React.FC<StockProps> = ({ data, startDate }) => {
 
   const stockOptions = {
     yAxis: [{
@@ -25,6 +26,10 @@ const Stock: React.FC<StockProps> = ({ data }) => {
         text: 'R$'
       }
     }],
+    xAxis: {
+      type: 'datetime',
+      min: startDate,
+    },
     series: [{
       data: data,
       // type: 'ohlc',
