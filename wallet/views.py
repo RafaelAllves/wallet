@@ -47,7 +47,13 @@ def position(request, user):
 
 def position_history(request, user):
 
+  ticker = request.GET.get('ticker')
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
+
+  if ticker:
+    asset_consolidated_values = asset_consolidated_values.filter(name=ticker.upper())
+
+
   df = pd.DataFrame(asset_consolidated_values.values())
   df = df[['date', 'value', 'invested']]
   df['date'] = pd.to_datetime(df['date'])
