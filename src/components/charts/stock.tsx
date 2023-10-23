@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-// import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import HighchartsExporting from 'highcharts/modules/exporting'
 import axios from 'axios';
-
-// import pivotPoints from 'highcharts/modules/pivotpoints';
-// import pivotPoints from 'highcharts/modules/pivotpoints';
-// pivotPoints(Highcharts);
+import darkUnica from 'highcharts/themes/dark-unica';
 
 
 if (typeof Highcharts === 'object') {
   HighchartsExporting(Highcharts)
 }
+
+darkUnica(Highcharts);
+
 const Stock = ({ticker}:any) => {
   const [data, setData] = useState<any>([]);
 
@@ -35,14 +34,26 @@ const Stock = ({ticker}:any) => {
     series: [{
       data: data,
       // type: 'ohlc',
+      type: 'areaspline',
       name: 'Preço',
-      id: ticker
+      id: ticker,
+      fillColor: {
+        linearGradient: {
+          x1: 0,
+          y1: 0,
+          x2: 0,
+          y2: 1
+        },
+        stops: [
+          [0, Highcharts?.getOptions()?.colors?.[0]],
+          [1, Highcharts?.color(Highcharts?.getOptions()?.colors?.[0]).setOpacity(0).get('rgba')]
+        ]
+      }
     }]
   }
 
   return (
     <div>
-      <h2>{ticker}</h2>
       <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={stockOptions} />
     </div>
   );
