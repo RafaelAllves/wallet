@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('assets', asset_views.asset, name='asset'),
     path('asset/<str:ticker>/', asset_views.asset_prices, name='prices'),
+    path('orders/', wallet_views.orders, name='orders'),
     path('position/<str:user>/', wallet_views.position, name='position'),
     path('position-history/<str:user>/', wallet_views.position_history, name='position_history'),
 ]
