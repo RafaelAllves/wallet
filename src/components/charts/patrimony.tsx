@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react';
 import {
   Chart as ChartJS,
@@ -14,6 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -27,6 +26,11 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  elements: {
+    point: {
+      radius: 0,
+    }
+  },
   plugins: {
     legend: {
       position: 'top' as const,
@@ -35,31 +39,39 @@ export const options = {
       display: true,
       text: 'Chart.js Line Chart',
     },
+    tooltip: {
+      intersect: false
+    }
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+interface PatrimonyProps {
+  data: {
+    labels: string[],
+    values: number[],
+    invested: number[]
+  };
+}
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: 'applied',
-      data: [6, 12, 16, 18, 20, 24, 37],
-      borderColor: 'rgb(2, 48, 71)',
-      backgroundColor: 'rgba(2, 48, 71, 1)',
-    },
-    {
-      fill: true,
-      label: 'gross',
-      data: [6, 13, 18, 22, 27, 31, 42],
-      borderColor: 'rgb(255, 183, 3)',
-      backgroundColor: 'rgba(255, 183, 3, 1)',
-    },
-  ],
-};
+export const Patrimony: React.FC<PatrimonyProps> = ({ data }) => {
 
-export function Patrimony() {
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={{
+    labels: data.labels,
+    datasets: [
+      {
+        fill: true,
+        label: 'invested',
+        data: data.invested,
+        borderColor: 'rgb(2, 48, 71)',
+        backgroundColor: 'rgba(2, 48, 71, 0.9)',
+      },
+      {
+        fill: true,
+        label: 'gross',
+        data: data.values,
+        borderColor: 'rgb(255, 183, 3)',
+        backgroundColor: 'rgba(255, 183, 3, 1)',
+      },
+    ],
+  }} />;
 }
