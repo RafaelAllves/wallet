@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app import views
+from app import views as asset_views
+from wallet import views as wallet_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('assets', views.asset, name='asset'),
-    path('asset/<str:ticker>/', views.asset_prices, name='prices'),
+    path('assets', asset_views.asset, name='asset'),
+    path('asset/<str:ticker>/', asset_views.asset_prices, name='prices'),
+    path('orders/', wallet_views.orders, name='orders'),
+    path('position/<str:user>/', wallet_views.position, name='position'),
+    path('position-history/<str:user>/', wallet_views.position_history, name='position_history'),
 ]
