@@ -75,4 +75,6 @@ def orders(request):
   df = pd.DataFrame(orders.values())
   df['timestamp'] = pd.to_datetime(df['date']).apply(lambda x: x.timestamp() * 1000)
   df['price'] = df['price'].astype(float)
+  df['volume'] = df['volume'].astype(int)
+  df = df.sort_values(by='timestamp', ascending=False)
   return JsonResponse(df.values.tolist(), safe=False)
