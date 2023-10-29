@@ -8,12 +8,24 @@ from decimal import Decimal
 
 
 class Command(BaseCommand):
+
+  help = 'Consolida a carteira'
+
+  def add_arguments(self, parser):
+    parser.add_argument('--tickers', nargs="*", default=None, help='Path to the backup file')
+
   def handle(self, *args, **options):
+
+    tickers = options['tickers']
     user = User.objects.get()
+
     assets = Order.objects.filter(user=user).values('name').distinct()
 
+    if tickers:
+      assets = Order.objects.filter(name__in=tickers)
+
     for asset in assets:
-      asset_name = asset['name']
+      asset_name = asset.name
 
       first_purchase_date = Order.objects.filter(name=asset_name, user=user, order_type=1).earliest('date').date
 
