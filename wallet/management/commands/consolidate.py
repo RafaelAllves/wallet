@@ -12,7 +12,7 @@ class Command(BaseCommand):
   help = 'Consolida a carteira'
 
   def add_arguments(self, parser):
-    parser.add_argument('--tickers', nargs="*", default=None, help='Path to the backup file')
+    parser.add_argument('--tickers', nargs="*", default=None, help='Tickers to consolidate')
 
   def handle(self, *args, **options):
 
