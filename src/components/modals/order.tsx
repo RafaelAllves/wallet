@@ -28,7 +28,7 @@ const OrderModal: React.FC<{
     }
   };
 
-  const handleSave = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSave(formData);
     onClose();
