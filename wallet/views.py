@@ -82,7 +82,7 @@ def orders(request):
   return JsonResponse(df.values.tolist(), safe=False)
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
-def create_order(request):
+def order(request):
   if request.method == 'POST':
     try:
       user = User.objects.get()
@@ -108,5 +108,21 @@ def create_order(request):
       print("Erro ao criar boleta")
       print(e)
       return JsonResponse({'message': str(e)}, status=500)
+  elif request.method == 'DELETE':
+    try:
+      user = User.objects.get()
+
+      data = json.loads(request.body.decode('utf-8'))
+
+      order = Order.objects.get(user=user, id=data.get('id'))
+
+      order.delete()
+      return JsonResponse({'message': 'Boleta deletada'}, status=204)
+
+    except Exception as e:
+      print("Erro ao deletar boleta")
+      print(e)
+      return JsonResponse({'message': str(e)}, status=500)
+   
   else:
-    return JsonResponse({'message': 'Esta rota suporta apenas solicitações POST'}, status=400)
+    return JsonResponse({'message': 'Esta rota suporta apenas solicitações POST e DELETE'}, status=400)
