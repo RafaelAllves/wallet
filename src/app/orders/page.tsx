@@ -32,7 +32,7 @@ const OrdersPage: React.FC<any> = ({ params }) => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Tabela de Boletas</h1>
-      <button onClick={openModal}>Abrir Modal</button>
+      <button onClick={openModal}>Nova Boleta</button>
       {isModalOpen && (
         <OrderModal onClose={closeModal} onSave={saveData} />
       )}
