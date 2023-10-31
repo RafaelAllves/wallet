@@ -6,7 +6,9 @@ from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 from .models import Order
 import pandas as pd
-
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def position(request, user):
   orders = Order.objects.filter(user=user)
@@ -78,3 +80,33 @@ def orders(request):
   df['volume'] = df['volume'].astype(int)
   df = df.sort_values(by='timestamp', ascending=False)
   return JsonResponse(df.values.tolist(), safe=False)
+
+@csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
+def create_order(request):
+  if request.method == 'POST':
+    try:
+      user = User.objects.get()
+
+      data = json.loads(request.body.decode('utf-8'))
+
+      order = Order(
+        name=data.get('name'),
+        broker=data.get('broker'),
+        asset_type=data.get('assetType'),
+        order_type=data.get('orderType'),
+        date=data.get('date'),
+        price=data.get('price'),
+        volume=data.get('volume'),
+        description=data.get('description'),
+        user=user,
+      )
+
+      order.save()
+      return JsonResponse({'message': 'Boleta criada'}, status=201)
+
+    except Exception as e:
+      print("Erro ao criar boleta")
+      print(e)
+      return JsonResponse({'message': str(e)}, status=500)
+  else:
+    return JsonResponse({'message': 'Esta rota suporta apenas solicitações POST'}, status=400)
