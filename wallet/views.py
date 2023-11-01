@@ -82,10 +82,10 @@ def orders(request):
   return JsonResponse(df.values.tolist(), safe=False)
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
-def order(request):
+def order(request, id):
+  user = User.objects.get()
   if request.method == 'POST':
     try:
-      user = User.objects.get()
 
       data = json.loads(request.body.decode('utf-8'))
 
@@ -108,10 +108,9 @@ def order(request):
       print("Erro ao criar boleta")
       print(e)
       return JsonResponse({'message': str(e)}, status=500)
+    
   elif request.method == 'DELETE':
     try:
-      user = User.objects.get()
-
       data = json.loads(request.body.decode('utf-8'))
 
       order = Order.objects.get(user=user, id=data.get('id'))
@@ -123,6 +122,36 @@ def order(request):
       print("Erro ao deletar boleta")
       print(e)
       return JsonResponse({'message': str(e)}, status=500)
-   
+    
+  elif request.method == 'PATCH' and id:
+    try:
+      data = json.loads(request.body.decode('utf-8'))
+      order = Order.objects.get(user=user, id=id)
+
+      if 'name' in data:
+        order.name = data['name']
+      if 'broker' in data:
+        order.broker = data['broker']
+      if 'assetType' in data:
+        order.asset_type = data['assetType']
+      if 'orderType' in data:
+        order.order_type = data['orderType']
+      if 'date' in data:
+        order.date = data['date']
+      if 'price' in data:
+        order.price = data['price']
+      if 'volume' in data:
+        order.volume = data['volume']
+      if 'description' in data:
+        order.description = data['description']
+
+      order.save()
+
+      return JsonResponse({'message': 'Boleta atualizada com sucesso'})
+    except Order.DoesNotExist:
+      return JsonResponse({'message': 'Boleta não encontrada'}, status=404)
+    except Exception as e:
+      return JsonResponse({'message': str(e)}, status=500)
+
   else:
-    return JsonResponse({'message': 'Esta rota suporta apenas solicitações POST e DELETE'}, status=400)
+    return JsonResponse({'message': 'Esta rota não suporta este tipo de solicitação'}, status=400)
