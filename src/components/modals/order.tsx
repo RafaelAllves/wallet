@@ -80,8 +80,8 @@ const OrderModal: React.FC<{
                 type="radio"
                 id="buy"
                 name="orderType"
-                value="buy"
-                checked={formData.orderType === "buy"}
+                value={1}
+                checked={formData.orderType === 1}
                 onChange={handleChange}
               />
               <label htmlFor="buy"> Compra</label>
@@ -91,8 +91,8 @@ const OrderModal: React.FC<{
                 type="radio"
                 id="sell"
                 name="orderType"
-                value="sell"
-                checked={formData.orderType === "sell"}
+                value={-1}
+                checked={formData.orderType === -1}
                 onChange={handleChange}
               />
               <label htmlFor="sell"> Venda</label>
