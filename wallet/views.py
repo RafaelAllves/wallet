@@ -111,9 +111,7 @@ def order(request, id):
     
   elif request.method == 'DELETE':
     try:
-      data = json.loads(request.body.decode('utf-8'))
-
-      order = Order.objects.get(user=user, id=data.get('id'))
+      order = Order.objects.get(user=user, id=id)
 
       order.delete()
       return JsonResponse({'message': 'Boleta deletada'}, status=204)
