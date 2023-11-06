@@ -1,4 +1,7 @@
 import React from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 interface OrdersTableProps {
   data: (string | number | null)[][];
@@ -7,6 +10,12 @@ interface OrdersTableProps {
 const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
 
   if(!data) return;
+
+  const handleEdit = () => {
+  };
+
+  const handleDelete = () => {
+  };
 
   return (
     <div>
@@ -19,6 +28,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
             <th className="px-4 py-2">Volume</th>
             <th className="px-4 py-2">Preço Médio</th>
             <th className="px-4 py-2">Valor da Boleta</th>
+            <th className="px-4 py-2">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +43,21 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
                 <td className="px-4 py-2 text-center">{volume || '-'}</td>
                 <td className="px-4 py-2 text-center">{price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
                 <td className="px-4 py-2 text-center">{(Number(price) * Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
+                <td className="px-4 py-2 flex justify-around">
+                  <div>
+                    <EditIcon
+                      onClick={() => handleEdit()}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </div>
+                  <div>
+                    <DeleteIcon
+                      onClick={() => handleDelete()}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </div>
+                </td>
+
               </tr>
             )
           })}
