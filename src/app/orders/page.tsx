@@ -25,7 +25,7 @@ const OrdersPage: React.FC<any> = ({ params }) => {
   }
 
   const saveData = (data: any) => {
-    axios.post(`http://127.0.0.1:8000/order`, {params: data})
+    axios.post(`http://127.0.0.1:8000/order`, data)
       .then(response => {
         getData(null)
         alert('Boleta criada com sucesso')
