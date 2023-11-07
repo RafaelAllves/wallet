@@ -22,11 +22,14 @@ const OrdersPage: React.FC<any> = ({ params }) => {
     console.log(data);
   };
 
-  
-  useEffect(()=> {
+  const getData = (ticker: string | null) => {
     axios.get(`http://127.0.0.1:8000/orders`, {params: {ticker}}).then(response => {
       setDataOrders(response.data)
     })
+  }
+
+  useEffect(()=> {
+    getData(ticker)
   }, [ticker])
 
   return (
@@ -36,7 +39,7 @@ const OrdersPage: React.FC<any> = ({ params }) => {
       {isModalOpen && (
         <OrderModal onClose={closeModal} onSave={saveData} />
       )}
-      <OrdersTable data={dataOrders} />
+      <OrdersTable data={dataOrders} getData={getData} />
     </div>
   );
 };
