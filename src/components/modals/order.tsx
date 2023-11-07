@@ -8,7 +8,7 @@ const OrderModal: React.FC<{
     name: "",
     broker: "Nu Invest",
     assetType: "AC",
-    orderType: "buy",
+    orderType: 1,
     date: null,
     price: null,
     volume: null,
@@ -23,6 +23,8 @@ const OrderModal: React.FC<{
       setFormData({ ...formData, [name]: value? Number(value) : null });
     } else if (name === "volume") {
       setFormData({ ...formData, [name]: value? Number(value) : null });
+    } else if (name === "orderType") {
+      setFormData({ ...formData, [name]: Number(value)});
     } else {
       setFormData({ ...formData, [name]: value });
     }
