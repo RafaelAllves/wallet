@@ -1,20 +1,29 @@
 import React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import axios from 'axios';
 
 interface OrdersTableProps {
   data: (string | number | null)[][];
+  getData: (ticker: string | null) => void;
 }
 
-const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
+const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
 
   if(!data) return;
 
   const handleEdit = () => {
   };
 
-  const handleDelete = () => {
+  const handleDelete = (id: string | number | null) => {
+    axios.delete(`http://127.0.0.1:8000/order/${id}`)
+      .then(response => {
+        getData(null)
+        alert('Boleta deletada com sucesso')
+      })
+      .catch(error => {
+        alert('Erro ao deletar boleta')
+      })
   };
 
   return (
@@ -52,7 +61,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
                   </div>
                   <div>
                     <DeleteIcon
-                      onClick={() => handleDelete()}
+                      onClick={() => handleDelete(id)}
                       style={{ cursor: 'pointer' }}
                     />
                   </div>
