@@ -82,7 +82,7 @@ def orders(request):
   return JsonResponse(df.values.tolist(), safe=False)
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
-def order(request, id):
+def order(request, id=None):
   user = User.objects.get()
   if request.method == 'POST':
     try:
