@@ -3,16 +3,19 @@ import React, { useState } from "react";
 const OrderModal: React.FC<{
   onClose: () => void;
   onSave: (data: any) => void;
-}> = ({ onClose, onSave }) => {
+  order?: (string | number | null)[];
+}> = ({ onClose, onSave, order }) => {
+
   const [formData, setFormData] = useState<any>({
-    name: "",
-    broker: "Nu Invest",
-    assetType: "AC",
-    orderType: 1,
-    date: null,
-    price: null,
-    volume: null,
-    description: "",
+    id: order?.[0] || null,
+    name: order?.[1] || "",
+    broker: order?.[2] || "Nu Invest",
+    assetType: order?.[3] || "AC",
+    orderType: order?.[4] || 1,
+    date: order?.[5] || null,
+    price: order?.[6] || null,
+    volume: order?.[7] || null,
+    description: order?.[8] || "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
