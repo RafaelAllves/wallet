@@ -6,7 +6,9 @@ from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 from .models import Order
 import pandas as pd
-
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def position(request, user):
   orders = Order.objects.filter(user=user)
@@ -78,3 +80,76 @@ def orders(request):
   df['volume'] = df['volume'].astype(int)
   df = df.sort_values(by='timestamp', ascending=False)
   return JsonResponse(df.values.tolist(), safe=False)
+
+@csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
+def order(request, id=None):
+  user = User.objects.get()
+  if request.method == 'POST':
+    try:
+
+      data = json.loads(request.body.decode('utf-8'))
+
+      order = Order(
+        name=data.get('name'),
+        broker=data.get('broker'),
+        asset_type=data.get('assetType'),
+        order_type=data.get('orderType'),
+        date=data.get('date'),
+        price=data.get('price'),
+        volume=data.get('volume'),
+        description=data.get('description'),
+        user=user,
+      )
+
+      order.save()
+      return JsonResponse({'message': 'Boleta criada'}, status=201)
+
+    except Exception as e:
+      print("Erro ao criar boleta")
+      print(e)
+      return JsonResponse({'message': str(e)}, status=500)
+    
+  elif request.method == 'DELETE':
+    try:
+      order = Order.objects.get(user=user, id=id)
+
+      order.delete()
+      return JsonResponse({'message': 'Boleta deletada'}, status=204)
+
+    except Exception as e:
+      print("Erro ao deletar boleta")
+      print(e)
+      return JsonResponse({'message': str(e)}, status=500)
+    
+  elif request.method == 'PATCH' and id:
+    try:
+      data = json.loads(request.body.decode('utf-8'))
+      order = Order.objects.get(user=user, id=id)
+
+      if 'name' in data:
+        order.name = data['name']
+      if 'broker' in data:
+        order.broker = data['broker']
+      if 'assetType' in data:
+        order.asset_type = data['assetType']
+      if 'orderType' in data:
+        order.order_type = data['orderType']
+      if 'date' in data:
+        order.date = data['date']
+      if 'price' in data:
+        order.price = data['price']
+      if 'volume' in data:
+        order.volume = data['volume']
+      if 'description' in data:
+        order.description = data['description']
+
+      order.save()
+
+      return JsonResponse({'message': 'Boleta atualizada com sucesso'})
+    except Order.DoesNotExist:
+      return JsonResponse({'message': 'Boleta não encontrada'}, status=404)
+    except Exception as e:
+      return JsonResponse({'message': str(e)}, status=500)
+
+  else:
+    return JsonResponse({'message': 'Esta rota não suporta este tipo de solicitação'}, status=400)
