@@ -104,7 +104,7 @@ const OrderModal: React.FC<{
             </div>
           </div>
 
-          <div className="mb-4 lg:w-1/3 p-4">
+          <div className="mb-4 lg:w-5/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Data:
             </label>
@@ -119,7 +119,7 @@ const OrderModal: React.FC<{
             />
           </div>
           
-          <div className="mb-4 lg:w-1/3 p-4">
+          <div className="mb-4 lg:w-4/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Preço:
             </label>
@@ -134,7 +134,7 @@ const OrderModal: React.FC<{
             />
           </div>
 
-          <div className="mb-4 lg:w-1/3 p-4">
+          <div className="mb-4 lg:w-3/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Volume:
             </label>
