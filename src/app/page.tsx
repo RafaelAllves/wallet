@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Patrimony } from "../components/charts/patrimony";
 import { AssetClasses } from "../components/charts/assetClasses";
 import PositionTable from "../components/positionsTable";
+import Navbar from "../components/navbar";
 import axios from 'axios';
 
 
@@ -24,6 +25,7 @@ export default function Home() {
 
   return (
     <main className="flex h-screen flex-col">
+      <Navbar />
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
           <AssetClasses asset_classes={dataAssets.asset_classes}/>
