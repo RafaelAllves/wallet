@@ -25,7 +25,7 @@ class Command(BaseCommand):
       assets = Order.objects.filter(name__in=tickers)
 
     for asset in assets:
-      asset_name = asset.name
+      asset_name = asset['name']
 
       first_purchase_date = Order.objects.filter(name=asset_name, user=user, order_type=1).earliest('date').date
 
