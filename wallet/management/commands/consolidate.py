@@ -25,13 +25,14 @@ class Command(BaseCommand):
       assets = Order.objects.filter(name__in=tickers)
 
     for asset in assets:
-      asset_name = asset.name
+      asset_name = asset['name']
 
       first_purchase_date = Order.objects.filter(name=asset_name, user=user, order_type=1).earliest('date').date
 
       current_date = datetime.today().date()
       invested = 0
       consolidated_value = 0
+      realized_value = 0
       volume = 0
 
       current = first_purchase_date
@@ -41,10 +42,16 @@ class Command(BaseCommand):
 
         if daily_purchases:
           for purchase in daily_purchases:
-            volume += purchase.volume * purchase.order_type
-            invested += purchase.price * purchase.volume * purchase.order_type
+            if purchase.order_type == 1:
+              volume += purchase.volume
+              invested += purchase.price * purchase.volume
+            else:
+              average_price = (invested/volume)
+              volume -= purchase.volume
+              invested -= average_price * purchase.volume
+              realized_value += purchase.volume * Decimal(str(purchase.price - average_price))
 
-        consolidated_value = volume * Decimal(str(assetPrice.close))
+        consolidated_value = (volume * Decimal(str(assetPrice.close))) + realized_value
 
         asset_consolidated_value, created = AssetConsolidatedValue.objects.get_or_create(
           user=user,
