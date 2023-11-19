@@ -28,7 +28,6 @@ const TickerChart: React.FC<any> = ({ params }) => {
 
     axios.get(`http://127.0.0.1:8000/orders`, {params: {ticker}}).then(response => {
       setDataOrders(response.data)
-      console.log(response.data?.map(e => [e[13], e[6]]))
     })
   }, [ticker])
 

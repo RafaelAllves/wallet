@@ -29,9 +29,6 @@ export default function Home() {
           <AssetClasses asset_classes={dataAssets.asset_classes}/>
         </div>
         <div className="flex w-3/5 flex-col gap-4">
-          <div className="flex h-1/4 items-center justify-center">
-            Position
-          </div>
           <div className="flex flex-grow items-center justify-center">
             <Patrimony data={dataPatrimony}/>
           </div>

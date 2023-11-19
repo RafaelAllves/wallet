@@ -20,7 +20,7 @@ const Stock: React.FC<StockProps> = ({ data, startDate, dataOrders }) => {
 
   const stockOptions = {
     legend: {
-      enabled: true, // Ativa a legenda
+      enabled: true,
     },
     yAxis: [{
       labels: {
@@ -54,10 +54,16 @@ const Stock: React.FC<StockProps> = ({ data, startDate, dataOrders }) => {
         }
       },
       {
-        data: dataOrders?.map(e => [e[13], e[6]]),
+        data: dataOrders?.filter(e => e[4] == 1)?.map(e => [e[13], e[6]]),
         name: 'Compra',
         type: 'scatter',
         color: 'red',
+      },
+      {
+        data: dataOrders?.filter(e => e[4] == -1)?.map(e => [e[13], e[6]]),
+        name: 'Venda',
+        type: 'scatter',
+        color: 'green',
       }
     ]
   }
