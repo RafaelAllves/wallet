@@ -15,7 +15,7 @@ export default function Home() {
       setDataAssets(response.data)
     })
 
-    axios.get(`http://127.0.0.1:8000/position-history/1`).then(response => {
+    axios.get(`http://127.0.0.1:8000/position-history`).then(response => {
       setDataPatrimony(response.data)
     })
 
