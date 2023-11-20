@@ -47,9 +47,10 @@ def position(request, user):
   return JsonResponse({"assets": df.values.tolist(), "asset_classes": asset_classes}, safe=False)
 
 
-def position_history(request, user):
+def position_history(request):
 
   ticker = request.GET.get('ticker')
+  user = User.objects.get()
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
 
   if ticker:
@@ -118,6 +119,20 @@ def order(request, id=None):
 
     except Exception as e:
       print("Erro ao deletar boleta")
+      print(e)
+      return JsonResponse({'message': str(e)}, status=500)
+  
+  elif request.method == 'GET':
+    try:
+      print( 'aaaaaa')
+      order = Order.objects.get(id=id)
+      print(order.user)
+      # data = json.loads(response.text)
+      # df = pd.DataFrame(order.values())
+      return JsonResponse({"order": order}, status=200)
+
+    except Exception as e:
+      print("Erro ao buscar boleta")
       print(e)
       return JsonResponse({'message': str(e)}, status=500)
     
