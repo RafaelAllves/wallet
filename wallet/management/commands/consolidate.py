@@ -19,13 +19,14 @@ class Command(BaseCommand):
     tickers = options['tickers']
     user = User.objects.get()
 
-    assets = Order.objects.filter(user=user).values('name').distinct()
+    assets = Order.objects.filter(user=user).values('name', 'asset_type').distinct()
 
     if tickers:
       assets = Order.objects.filter(name__in=tickers)
 
     for asset in assets:
       asset_name = asset['name']
+      asset_type = asset['asset_type']
 
       first_purchase_date = Order.objects.filter(name=asset_name, user=user, order_type=1).earliest('date').date
 
@@ -57,13 +58,14 @@ class Command(BaseCommand):
           user=user,
           name=asset_name,
           date=current,
-          defaults={'value': consolidated_value, 'volume': volume, 'invested': invested}
+          defaults={'value': consolidated_value, 'volume': volume, 'invested': invested, 'asset_type': asset_type}
         )
 
         if not created:
           asset_consolidated_value.value = consolidated_value
           asset_consolidated_value.volume = volume
           asset_consolidated_value.invested = invested
+          asset_consolidated_value.asset_type = asset_type
           asset_consolidated_value.save()
 
         print(asset_name, current, volume, consolidated_value)

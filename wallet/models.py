@@ -39,8 +39,16 @@ class Order(models.Model):
 
 
 class AssetConsolidatedValue(models.Model):
+  ASSET_TYPES = [
+    ('AC', 'Ações'),
+    ('RF', 'Renda Fixa'),
+    ('FII', 'Fundos de Investimento Imobiliário'),
+    ('TD', 'Tesouro Direto'),
+  ]
+
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   name = models.CharField(max_length=32)
+  asset_type = models.CharField(max_length=3, choices=ASSET_TYPES)
   date = models.DateField()
   value = models.DecimalField(max_digits=10, decimal_places=2)
   volume = models.DecimalField(max_digits=8, decimal_places=4)
