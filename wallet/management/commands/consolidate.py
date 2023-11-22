@@ -22,7 +22,7 @@ class Command(BaseCommand):
     assets = Order.objects.filter(user=user).values('name', 'asset_type').distinct()
 
     if tickers:
-      assets = Order.objects.filter(name__in=tickers)
+      assets = Order.objects.filter(name__in=tickers).values('name', 'asset_type').distinct()
 
     for asset in assets:
       asset_name = asset['name']
