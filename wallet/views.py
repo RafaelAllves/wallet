@@ -50,11 +50,14 @@ def position(request, user):
 def position_history(request):
 
   ticker = request.GET.get('ticker')
+  asset_type = request.GET.get('class')
   user = User.objects.get()
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
-
+  
   if ticker:
     asset_consolidated_values = asset_consolidated_values.filter(name=ticker.upper())
+  elif asset_type:
+    asset_consolidated_values = asset_consolidated_values.filter(asset_type=asset_type.upper())
 
 
   df = pd.DataFrame(asset_consolidated_values.values())
