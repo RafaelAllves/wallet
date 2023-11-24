@@ -13,7 +13,7 @@ const TickerChart: React.FC<any> = ({ params }) => {
   const [startDate, setStartDate] = useState<any>();
 
   useEffect(()=> {
-    axios.get(`http://127.0.0.1:8000/position-history/1`, {params: {ticker}}).then(response => {
+    axios.get(`http://127.0.0.1:8000/position-history`, {params: {ticker}}).then(response => {
       setDataPatrimony(response.data)
       setStartDate(Date.UTC(
         parseInt(response.data?.labels?.[0].split('/')[2], 10), 
