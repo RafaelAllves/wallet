@@ -6,7 +6,6 @@ class Order(models.Model):
     ('AC', 'Ações'),
     ('RF', 'Renda Fixa'),
     ('FII', 'Fundos de Investimento Imobiliário'),
-    ('TD', 'Tesouro Direto'),
   ]
 
   ORDER_TYPES = [
@@ -20,6 +19,13 @@ class Order(models.Model):
     ('I', 'IPCA'),
   ]
 
+  FIXED_INCOME_CHOICES = [
+    ('CDB', 'Certificado de Depósito Bancário'),
+    ('LCA', 'Letra de Crédito do Agronegócio'),
+    ('LCI', 'Letra de Crédito Imobiliário'),
+    ('TD', 'Tesouro Direto'),
+  ]
+
   name = models.CharField(max_length=32)
   broker = models.CharField(max_length=32)
   asset_type = models.CharField(max_length=3, choices=ASSET_TYPES)
@@ -31,6 +37,7 @@ class Order(models.Model):
   interest_rate = models.DecimalField(max_digits=8, decimal_places=5, null=True)
   maturity_date = models.DateField(null=True)
   index = models.CharField(max_length=1, choices=INDEX_CHOICES, null=True)
+  fixed_income_type = models.CharField(max_length=3, choices=FIXED_INCOME_CHOICES, null=True)
 
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -43,7 +50,6 @@ class AssetConsolidatedValue(models.Model):
     ('AC', 'Ações'),
     ('RF', 'Renda Fixa'),
     ('FII', 'Fundos de Investimento Imobiliário'),
-    ('TD', 'Tesouro Direto'),
   ]
 
   user = models.ForeignKey(User, on_delete=models.CASCADE)
