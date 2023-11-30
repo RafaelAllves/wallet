@@ -10,7 +10,8 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-def position(request, user):
+def position(request):
+  user = User.objects.get()
   orders = Order.objects.filter(user=user)
   assets = {}
   asset_classes = {}
