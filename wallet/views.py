@@ -12,7 +12,9 @@ import json
 
 def position(request):
   user = User.objects.get()
-  orders = Order.objects.filter(user=user)
+
+  # bypass as it does not work for fixed income yet
+  orders = Order.objects.filter(user=user).exclude(asset_type="RF")
   assets = {}
   asset_classes = {}
   for order in orders:
