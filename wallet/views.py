@@ -58,7 +58,7 @@ def position_history(request):
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
   
   if ticker:
-    asset_consolidated_values = asset_consolidated_values.filter(name=ticker.upper())
+    asset_consolidated_values = asset_consolidated_values.filter(name=ticker.replace('-', ' ').upper())
   elif asset_type:
     asset_consolidated_values = asset_consolidated_values.filter(asset_type=asset_type.upper())
 
