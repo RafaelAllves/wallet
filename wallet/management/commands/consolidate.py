@@ -19,7 +19,7 @@ class Command(BaseCommand):
     tickers = options['tickers']
     user = User.objects.get()
 
-    assets = Order.objects.filter(user=user).values('name', 'asset_type').distinct()
+    assets = Order.objects.filter(user=user).values('name', 'asset_type').exclude(asset_type="RF").distinct()
 
     if tickers:
       assets = Order.objects.filter(name__in=tickers).values('name', 'asset_type').distinct()

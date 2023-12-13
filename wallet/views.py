@@ -10,8 +10,11 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-def position(request, user):
-  orders = Order.objects.filter(user=user)
+def position(request):
+  user = User.objects.get()
+
+  # bypass as it does not work for fixed income yet
+  orders = Order.objects.filter(user=user).exclude(asset_type="RF")
   assets = {}
   asset_classes = {}
   for order in orders:
@@ -55,7 +58,7 @@ def position_history(request):
   asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
   
   if ticker:
-    asset_consolidated_values = asset_consolidated_values.filter(name=ticker.upper())
+    asset_consolidated_values = asset_consolidated_values.filter(name=ticker.replace('-', ' ').upper())
   elif asset_type:
     asset_consolidated_values = asset_consolidated_values.filter(asset_type=asset_type.upper())
 
@@ -93,17 +96,34 @@ def order(request, id=None):
 
       data = json.loads(request.body.decode('utf-8'))
 
-      order = Order(
-        name=data.get('name'),
-        broker=data.get('broker'),
-        asset_type=data.get('assetType'),
-        order_type=data.get('orderType'),
-        date=data.get('date'),
-        price=data.get('price'),
-        volume=data.get('volume'),
-        description=data.get('description'),
-        user=user,
-      )
+      if data.get('assetType') == 'RF':
+        order = Order(
+          name=data.get('name'),
+          broker=data.get('broker'),
+          asset_type=data.get('assetType'),
+          order_type=data.get('orderType'),
+          date=data.get('date'),
+          price=data.get('price'),
+          volume=data.get('volume'),
+          description=data.get('description'),
+          interest_rate=data.get('interestRate'),
+          maturity_date=data.get('maturity'),
+          index=data.get('index'),
+          fixed_income_type=data.get('fixedIncomeType'),
+          user=user,
+        )
+      else:
+        order = Order(
+          name=data.get('name'),
+          broker=data.get('broker'),
+          asset_type=data.get('assetType'),
+          order_type=data.get('orderType'),
+          date=data.get('date'),
+          price=data.get('price'),
+          volume=data.get('volume'),
+          description=data.get('description'),
+          user=user,
+        )
 
       order.save()
       return JsonResponse({'message': 'Boleta criada'}, status=201)
@@ -160,6 +180,14 @@ def order(request, id=None):
         order.volume = data['volume']
       if 'description' in data:
         order.description = data['description']
+      if 'interestRate' in data:
+        order.interest_rate = data['interestRate']
+      if 'maturity' in data:
+        order.maturity_date = data['maturity']
+      if 'index' in data:
+        order.index = data['index']
+      if 'fixedIncomeType' in data:
+        order.fixed_income_type = data['fixedIncomeType']
 
       order.save()
 

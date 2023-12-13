@@ -26,6 +26,6 @@ urlpatterns = [
     path('orders/', wallet_views.orders, name='orders'),
     path('order/<str:id>', wallet_views.order, name='order'),
     path('order', wallet_views.order, name='create_order'),
-    path('position/<str:user>/', wallet_views.position, name='position'),
+    path('position', wallet_views.position, name='position'),
     path('position-history', wallet_views.position_history, name='position_history'),
 ]
