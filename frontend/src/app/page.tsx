@@ -11,8 +11,8 @@ export default function Home() {
   const [dataPatrimony, setDataPatrimony] = useState<any>([]);
   const [selectedClass, setSelectedClass] = useState<string>('All');
 
-  useEffect(()=> {
-    axios.get(`http://127.0.0.1:8000/position/1`).then(response => {
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/position`).then(response => {
       setDataAssets(response.data)
     })
 
@@ -60,17 +60,17 @@ export default function Home() {
       </div>
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <AssetClasses asset_classes={dataAssets.asset_classes}/>
+          <AssetClasses asset_classes={dataAssets.asset_classes} />
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex flex-grow items-center justify-center">
-            <Patrimony data={dataPatrimony}/>
+            <Patrimony data={dataPatrimony} />
           </div>
         </div>
       </div>
       <div className="flex justify-center py-20">
-        
-        <PositionTable assets={dataAssets.assets}/>
+
+        <PositionTable assets={dataAssets.assets} />
       </div>
     </main>
   )
