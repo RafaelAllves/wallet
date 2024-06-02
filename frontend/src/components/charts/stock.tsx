@@ -32,6 +32,7 @@ const Stock: React.FC<StockProps> = ({ data, startDate, dataOrders }) => {
     }],
     xAxis: {
       type: 'datetime',
+      min: 949363200000, // 01/01/2000
     },
     series: [
       {
@@ -49,7 +50,7 @@ const Stock: React.FC<StockProps> = ({ data, startDate, dataOrders }) => {
           },
           stops: [
             [0, Highcharts?.getOptions()?.colors?.[0]],
-            [1, Highcharts?.color(Highcharts?.getOptions()?.colors?.[0]).setOpacity(0).get('rgba')]
+            [1, Highcharts?.color(Highcharts?.getOptions()?.colors?.[0] || "#FFF").setOpacity(0).get('rgba')]
           ]
         }
       },
@@ -67,7 +68,7 @@ const Stock: React.FC<StockProps> = ({ data, startDate, dataOrders }) => {
       }
     ]
   }
-  if(startDate) stockOptions.xAxis.min = startDate;
+  if (startDate) stockOptions.xAxis.min = startDate;
 
 
   return (

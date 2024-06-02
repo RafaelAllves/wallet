@@ -12,7 +12,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderSelected, setOrderSelected] = useState<(string | number | null)[]>([]);
 
-  if(!data) return;
+  if (!data) return;
 
 
   const openModal = (order: (string | number | null)[]) => {
@@ -49,7 +49,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
   return (
     <div>
       {isModalOpen && (
-        <OrderModal onClose={closeModal} onSave={updateOrder} order={orderSelected}/>
+        <OrderModal onClose={closeModal} onSave={updateOrder} order={orderSelected} />
       )}
       <table className="table-auto w-full">
         <thead>
@@ -65,12 +65,12 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
         </thead>
         <tbody>
           {data.map((order) => {
-            const [ id, name, broker, asset_type, order_type, date, price, volume, description, interest_rate, maturity_date, index, user, timestamp] = order
+            const [id, name, broker, asset_type, order_type, date, price, volume, description, interest_rate, maturity_date, index, user, timestamp] = order
 
             return (
               <tr key={name}>
                 <td className="px-4 py-2 text-center">{date || '-'}</td>
-                <td className="px-4 py-2 text-center">{order_type == 1? 'Compra': 'venda'}</td>
+                <td className="px-4 py-2 text-center">{order_type == 1 ? 'Compra' : 'venda'}</td>
                 <td className="px-4 py-2 text-center">{name}</td>
                 <td className="px-4 py-2 text-center">{volume || '-'}</td>
                 <td className="px-4 py-2 text-center">{price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
