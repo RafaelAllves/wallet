@@ -16,6 +16,7 @@ const OrderModal: React.FC<{
     price: order?.[6] || null,
     volume: order?.[7] || null,
     description: order?.[8] || "",
+    interestRate: order?.[9] || "0",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -25,6 +26,8 @@ const OrderModal: React.FC<{
     } else if (name === "price") {
       setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "volume") {
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
+    } else if (name === "interestRate") {
       setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "orderType") {
       setFormData({ ...formData, [name]: Number(value) });
@@ -143,6 +146,21 @@ const OrderModal: React.FC<{
               name="volume"
               id="volume"
               value={formData.volume}
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-md"
+            />
+          </div>
+
+          <div className="mb-4 lg:w-3/12 p-4">
+            <label htmlFor="name" className="block text-sm font-semibold mb-2">
+              Taxa:
+            </label>
+            <input
+              type="number"
+              name="interestRate"
+              id="interestRate"
+              value={formData.interestRate}
               required
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-md"
