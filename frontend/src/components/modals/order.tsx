@@ -23,11 +23,11 @@ const OrderModal: React.FC<{
     if (name === "name") {
       setFormData({ ...formData, [name]: value.toUpperCase() });
     } else if (name === "price") {
-      setFormData({ ...formData, [name]: value? Number(value) : null });
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "volume") {
-      setFormData({ ...formData, [name]: value? Number(value) : null });
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "orderType") {
-      setFormData({ ...formData, [name]: Number(value)});
+      setFormData({ ...formData, [name]: Number(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -60,6 +60,7 @@ const OrderModal: React.FC<{
               <option value="AC">Ações BR</option>
               <option value="INT">Ativos Internacionais</option>
               <option value="FII">Fundos de Investimento Imobiliário</option>
+              <option value="RF">Renda Fixa</option>
             </select>
           </div>
 
@@ -118,7 +119,6 @@ const OrderModal: React.FC<{
               className="w-full px-4 py-2 border rounded-md"
             />
           </div>
-          
           <div className="mb-4 lg:w-4/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Preço:
@@ -162,8 +162,6 @@ const OrderModal: React.FC<{
               className="w-full px-4 py-2 border rounded-md"
             />
           </div>
-          
-          
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
