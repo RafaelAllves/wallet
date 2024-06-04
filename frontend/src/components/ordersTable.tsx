@@ -68,7 +68,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
             const [id, name, broker, asset_type, order_type, date, price, volume, description, interest_rate, maturity_date, index, user, timestamp] = order
 
             return (
-              <tr key={name}>
+              <tr key={id}>
                 <td className="px-4 py-2 text-center">{date || '-'}</td>
                 <td className="px-4 py-2 text-center">{order_type == 1 ? 'Compra' : 'venda'}</td>
                 <td className="px-4 py-2 text-center">{name}</td>
