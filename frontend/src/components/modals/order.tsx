@@ -18,6 +18,7 @@ const OrderModal: React.FC<{
     description: order?.[8] || "",
     interestRate: order?.[9] || "0",
     maturityDate: order?.[10] || null,
+    index: order?.[11] || null,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -166,6 +167,15 @@ const OrderModal: React.FC<{
               required
               className="w-full px-4 py-2 border rounded-md"
             />
+          </div>
+
+          <div className="mb-4 lg:w-4/12 p-4">
+            <label htmlFor="index" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <select id="index" name="index" required value={formData.index} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+              <option value="P">Pré-fixado</option>
+              <option value="S">Selic</option>
+              <option value="I">IPCA</option>
+            </select>
           </div>
 
           <div className="mb-4 lg:w-3/12 p-4">
