@@ -17,6 +17,7 @@ const OrderModal: React.FC<{
     volume: order?.[7] || null,
     description: order?.[8] || "",
     interestRate: order?.[9] || "0",
+    maturityDate: order?.[10] || null,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -148,6 +149,21 @@ const OrderModal: React.FC<{
               value={formData.volume}
               required
               onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-md"
+            />
+          </div>
+
+          <div className="mb-4 lg:w-5/12 p-4">
+            <label htmlFor="maturityDate" className="block text-sm font-semibold mb-2">
+              Vencimento:
+            </label>
+            <input
+              type="date"
+              name="maturityDate"
+              id="maturityDate"
+              value={formData.maturityDate}
+              onChange={handleChange}
+              required
               className="w-full px-4 py-2 border rounded-md"
             />
           </div>
