@@ -52,7 +52,7 @@ const OrderModal: React.FC<{
         <form className="lg:flex lg:flex-wrap" onSubmit={handleSave}>
 
           <div className="mb-4 lg:w-1/2 p-4">
-            <label htmlFor="broker" className="block text-sm font-semibold mb-2">Selecione a corretora:</label>
+            <label htmlFor="broker" className="block text-sm font-semibold mb-2">Corretora:</label>
             <select id="broker" name="broker" required value={formData.broker} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="Nu Invest">Nu Invest</option>
               <option value="Rico">Rico</option>
@@ -61,7 +61,7 @@ const OrderModal: React.FC<{
           </div>
 
           <div className="mb-4 lg:w-1/2 p-4">
-            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Classe:</label>
             <select id="assetType" name="assetType" required value={formData.assetType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="AC">Ações BR</option>
               <option value="INT">Ativos Internacionais</option>
@@ -111,15 +111,19 @@ const OrderModal: React.FC<{
             </div>
           </div>
 
-          <div className="mb-4 lg:w-2/6 p-4">
-            <label htmlFor="fixedIncomeType" className="block text-sm font-semibold mb-2">Tipo:</label>
-            <select id="fixedIncomeType" name="fixedIncomeType" required value={formData.fixedIncomeType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
-              <option value="CDB">CDB</option>
-              <option value="LCA">LCA</option>
-              <option value="LCI">LCI</option>
-              <option value="TD">Tesouro Direto</option>
-            </select>
-          </div>
+          {
+            formData?.assetType === 'RF' && (
+              <div className="mb-4 lg:w-2/6 p-4">
+                <label htmlFor="fixedIncomeType" className="block text-sm font-semibold mb-2">Tipo:</label>
+                <select id="fixedIncomeType" name="fixedIncomeType" required value={formData.fixedIncomeType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+                  <option value="CDB">CDB</option>
+                  <option value="LCA">LCA</option>
+                  <option value="LCI">LCI</option>
+                  <option value="TD">Tesouro Direto</option>
+                </select>
+              </div>
+            )
+          }
 
           <div className="mb-4 lg:w-5/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
@@ -165,44 +169,50 @@ const OrderModal: React.FC<{
             />
           </div>
 
-          <div className="mb-4 lg:w-5/12 p-4">
-            <label htmlFor="maturityDate" className="block text-sm font-semibold mb-2">
-              Vencimento:
-            </label>
-            <input
-              type="date"
-              name="maturityDate"
-              id="maturityDate"
-              value={formData.maturityDate}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border rounded-md"
-            />
-          </div>
+          {
+            formData?.assetType === 'RF' && (
+              <>
+                <div className="mb-4 lg:w-5/12 p-4">
+                  <label htmlFor="maturityDate" className="block text-sm font-semibold mb-2">
+                    Vencimento:
+                  </label>
+                  <input
+                    type="date"
+                    name="maturityDate"
+                    id="maturityDate"
+                    value={formData.maturityDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+                <div className="mb-4 lg:w-4/12 p-4">
+                  <label htmlFor="index" className="block text-sm font-semibold mb-2">Index:</label>
+                  <select id="index" name="index" required value={formData.index} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+                    <option value="P">Pré-fixado</option>
+                    <option value="S">Selic</option>
+                    <option value="I">IPCA</option>
+                  </select>
+                </div>
 
-          <div className="mb-4 lg:w-4/12 p-4">
-            <label htmlFor="index" className="block text-sm font-semibold mb-2">Index:</label>
-            <select id="index" name="index" required value={formData.index} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
-              <option value="P">Pré-fixado</option>
-              <option value="S">Selic</option>
-              <option value="I">IPCA</option>
-            </select>
-          </div>
+                <div className="mb-4 lg:w-3/12 p-4">
+                  <label htmlFor="name" className="block text-sm font-semibold mb-2">
+                    Taxa:
+                  </label>
+                  <input
+                    type="number"
+                    name="interestRate"
+                    id="interestRate"
+                    value={formData.interestRate}
+                    required
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+              </>
+            )
+          }
 
-          <div className="mb-4 lg:w-3/12 p-4">
-            <label htmlFor="name" className="block text-sm font-semibold mb-2">
-              Taxa:
-            </label>
-            <input
-              type="number"
-              name="interestRate"
-              id="interestRate"
-              value={formData.interestRate}
-              required
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md"
-            />
-          </div>
 
           <div className="mb-4 w-full p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
