@@ -170,7 +170,7 @@ const OrderModal: React.FC<{
           </div>
 
           <div className="mb-4 lg:w-4/12 p-4">
-            <label htmlFor="index" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <label htmlFor="index" className="block text-sm font-semibold mb-2">Index:</label>
             <select id="index" name="index" required value={formData.index} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="P">Pré-fixado</option>
               <option value="S">Selic</option>
