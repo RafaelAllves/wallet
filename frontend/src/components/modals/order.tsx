@@ -86,7 +86,7 @@ const OrderModal: React.FC<{
           </div>
 
           <div className="mb-4 lg:w-1/6 p-4">
-            <label htmlFor="orderType" >Operação:</label>
+            <label htmlFor="orderType" className="block text-sm font-semibold mb-2">Operação:</label>
             <div>
               <input
                 type="radio"
