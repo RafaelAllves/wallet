@@ -19,6 +19,7 @@ const OrderModal: React.FC<{
     interestRate: order?.[9] || "0",
     maturityDate: order?.[10] || null,
     index: order?.[11] || null,
+    fixedIncomeType: order?.[12] || "CDB",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -84,8 +85,8 @@ const OrderModal: React.FC<{
             />
           </div>
 
-          <div className="mb-4 lg:w-1/3 p-4">
-            <label htmlFor="orderType">Operação:</label>
+          <div className="mb-4 lg:w-1/6 p-4">
+            <label htmlFor="orderType" >Operação:</label>
             <div>
               <input
                 type="radio"
@@ -108,6 +109,16 @@ const OrderModal: React.FC<{
               />
               <label htmlFor="sell"> Venda</label>
             </div>
+          </div>
+
+          <div className="mb-4 lg:w-2/6 p-4">
+            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <select id="assetType" name="assetType" required value={formData.assetType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+              <option value="CDB">CDB</option>
+              <option value="LCA">LCA</option>
+              <option value="LCI">LCI</option>
+              <option value="TD">Tesouro Direto</option>
+            </select>
           </div>
 
           <div className="mb-4 lg:w-5/12 p-4">
