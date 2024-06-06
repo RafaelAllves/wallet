@@ -112,8 +112,8 @@ const OrderModal: React.FC<{
           </div>
 
           <div className="mb-4 lg:w-2/6 p-4">
-            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Tipo:</label>
-            <select id="assetType" name="assetType" required value={formData.assetType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+            <label htmlFor="fixedIncomeType" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <select id="fixedIncomeType" name="fixedIncomeType" required value={formData.fixedIncomeType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="CDB">CDB</option>
               <option value="LCA">LCA</option>
               <option value="LCI">LCI</option>
