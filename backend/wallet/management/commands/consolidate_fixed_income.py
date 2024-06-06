@@ -37,7 +37,9 @@ class Command(BaseCommand):
 
             current_date = datetime.today().date()
             consolidated_value = 0
-            daily_variation = asset.interest_rate / 36500
+            daily_variation = Decimal(
+                (1 + (float(asset.interest_rate) / 100)) ** (1 / 365) - 1
+            )
             current_price = asset.price
 
             current = first_purchase_date
