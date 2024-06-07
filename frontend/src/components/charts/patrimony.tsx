@@ -31,13 +31,18 @@ export const options = {
       radius: 0,
     }
   },
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  },
   plugins: {
     legend: {
       position: 'top' as const,
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart',
+      text: 'Evolution of Patrimony',
     },
     tooltip: {
       intersect: false
