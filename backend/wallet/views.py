@@ -72,19 +72,26 @@ def position_history(request):
         )
 
     df = pd.DataFrame(asset_consolidated_values.values())
-    df = df[["date", "value", "invested"]]
+    df = df[["date", "value", "invested", "volume"]]
     df["date"] = pd.to_datetime(df["date"])
 
-    grouped = df.groupby("date").agg({"value": "sum", "invested": "sum"}).reset_index()
+    df["value_volume"] = df["value"] * df["volume"]
+    df["invested_volume"] = df["invested"] * df["volume"]
+    grouped = (
+        df.groupby("date")
+        .agg({"value_volume": "sum", "invested_volume": "sum"})
+        .reset_index()
+    )
+
     grouped["date"] = grouped["date"].dt.strftime("%d/%m/%Y")
-    grouped["value"] = grouped["value"].astype(float)
-    grouped["invested"] = grouped["invested"].astype(float)
+    grouped["value_volume"] = grouped["value_volume"].astype(float)
+    grouped["invested_volume"] = grouped["invested_volume"].astype(float)
 
     return JsonResponse(
         {
             "labels": grouped["date"].values.tolist(),
-            "values": grouped["value"].values.tolist(),
-            "invested": grouped["invested"].values.tolist(),
+            "values": grouped["value_volume"].values.tolist(),
+            "invested": grouped["invested_volume"].values.tolist(),
         },
         safe=False,
     )
