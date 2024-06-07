@@ -2,7 +2,6 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from wallet.models import Order
 from wallet.models import AssetConsolidatedValue
-from app.models import AssetPrice
 from datetime import timedelta, datetime
 from decimal import Decimal
 
@@ -29,11 +28,15 @@ class Command(BaseCommand):
         for asset in assets:
             asset_name = asset.name
 
-            first_purchase_date = (
-                Order.objects.filter(name=asset_name, user=user, order_type=1)
-                .earliest("date")
-                .date
-            )
+            first_order = Order.objects.filter(
+                name=asset_name, user=user, order_type=1
+            ).earliest("date")
+
+            if asset_name == "BMG":
+                print(first_order)
+                print(vars(first_order))
+                print(first_order.date)
+                print(first_order.maturity_date)
 
             current_date = datetime.today().date()
             consolidated_value = 0
@@ -42,8 +45,8 @@ class Command(BaseCommand):
             )
             current_price = asset.price
 
-            current = first_purchase_date
-            while current < current_date:
+            current = first_order.date
+            while current < current_date and current <= first_order.maturity_date:
                 current_price += current_price * daily_variation
 
                 consolidated_value = current_price
