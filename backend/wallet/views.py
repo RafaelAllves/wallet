@@ -2,8 +2,6 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from app.models import AssetPrice, Asset
 from wallet.models import AssetConsolidatedValue, Order
-from dateutil.relativedelta import relativedelta
-from django.utils import timezone
 from .models import Order
 import pandas as pd
 from django.contrib.auth.models import User
@@ -14,8 +12,7 @@ import json
 def position(request):
     user = User.objects.get()
 
-    # bypass as it does not work for fixed income yet
-    orders = Order.objects.filter(user=user).exclude(asset_type="RF")
+    orders = Order.objects.filter(user=user)
     assets = {}
     asset_classes = {}
     for order in orders:
@@ -26,6 +23,18 @@ def position(request):
         if asset_name in assets:
             assets[asset_name]["volume"] += int(volume)
             assets[asset_name]["cost"] += cost * int(volume)
+        elif order.asset_type == "RF":
+            latest_price = AssetConsolidatedValue.objects.filter(name=asset_name).last()
+
+            assets[asset_name] = {
+                "name": asset_name,
+                "asset_class": "RF",
+                "category": "RF",
+                "sub_category": "RF",
+                "volume": int(volume),
+                "cost": cost * int(volume),
+                "price": latest_price.value if latest_price else None,
+            }
         else:
             latest_price = AssetPrice.objects.filter(ticker=asset_name).last()
             asset = Asset.objects.get(ticker=asset_name)
