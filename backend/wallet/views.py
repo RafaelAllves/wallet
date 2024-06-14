@@ -48,7 +48,10 @@ def position(request):
                 "price": latest_price.close if latest_price else None,
             }
 
-        if assets[asset_name]["asset_class"] in asset_classes:
+        if (
+            assets[asset_name]["asset_class"] in asset_classes
+            and assets[asset_name]["price"]
+        ):
             if order.asset_type == "RF":
                 asset_classes[assets[asset_name]["asset_class"]]["value"] += assets[
                     asset_name
@@ -57,7 +60,7 @@ def position(request):
                 asset_classes[assets[asset_name]["asset_class"]]["value"] += (
                     int(volume) * assets[asset_name]["price"]
                 )
-        else:
+        elif assets[asset_name]["price"]:
             asset_classes[assets[asset_name]["asset_class"]] = {
                 "value": (assets[asset_name]["price"] * int(volume))
             }

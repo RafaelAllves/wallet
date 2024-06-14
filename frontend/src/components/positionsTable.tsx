@@ -12,7 +12,7 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
 
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  if(!assets) return;
+  if (!assets) return;
 
   const filteredAssets = assets.filter((asset) =>
     asset[0].toString().toLowerCase().includes(searchQuery.toLowerCase())
@@ -42,7 +42,7 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
         </thead>
         <tbody>
           {filteredAssets.map((asset) => {
-            const [ name, asset_class, category, sub_category, volume, cost, price ] = asset
+            const [name, asset_class, category, sub_category, volume, cost, price] = asset
             return (
               <tr key={name}>
                 <td className="px-4 py-2 text-center">{name}</td>
@@ -50,8 +50,8 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
                 <td className="px-4 py-2 text-center">{category || '-'}</td>
                 <td className="px-4 py-2 text-center">{sub_category || '-'}</td>
                 <td className="px-4 py-2 text-center">{volume || '-'}</td>
-                <td className="px-4 py-2 text-center">{(parseFloat(cost.toString())/Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
-                <td className="px-4 py-2 text-center">{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
+                <td className="px-4 py-2 text-center">{(parseFloat(cost.toString()) / Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
+                <td className="px-4 py-2 text-center">{price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
                 <td className="px-4 py-2 text-center">{(Number(price) * Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
               </tr>
             )
