@@ -32,18 +32,12 @@ class Command(BaseCommand):
                 name=asset_name, user=user, order_type=1
             ).earliest("date")
 
-            if asset_name == "BMG":
-                print(first_order)
-                print(vars(first_order))
-                print(first_order.date)
-                print(first_order.maturity_date)
-
             current_date = datetime.today().date()
             consolidated_value = 0
             daily_variation = Decimal(
                 (1 + (float(asset.interest_rate) / 100)) ** (1 / 365) - 1
             )
-            current_price = asset.price
+            current_price = asset.price * asset.volume
 
             current = first_order.date
             while current < current_date and current <= first_order.maturity_date:
@@ -59,7 +53,7 @@ class Command(BaseCommand):
                         defaults={
                             "value": consolidated_value,
                             "volume": asset.volume,
-                            "invested": asset.price,
+                            "invested": asset.price * asset.volume,
                             "asset_type": "RF",
                         },
                     )
@@ -68,7 +62,7 @@ class Command(BaseCommand):
                 if not created:
                     asset_consolidated_value.value = consolidated_value
                     asset_consolidated_value.volume = asset.volume
-                    asset_consolidated_value.invested = asset.price
+                    asset_consolidated_value.invested = asset.price * asset.volume
                     asset_consolidated_value.asset_type = "RF"
                     asset_consolidated_value.save()
 
