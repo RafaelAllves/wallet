@@ -33,16 +33,28 @@ export const options = {
   },
   scales: {
     y: {
-      beginAtZero: true
+      beginAtZero: true,
+      ticks: {
+        color: 'white',
+      }
+    },
+    x: {
+      ticks: {
+        color: 'white',
+      }
     }
   },
   plugins: {
     legend: {
       position: 'top' as const,
+      labels: {
+        color: 'white',
+      },
     },
     title: {
       display: true,
-      text: 'Evolution of Patrimony',
+      text: 'Evolução do Património',
+      color: 'white',
     },
     tooltip: {
       intersect: false
