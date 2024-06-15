@@ -61,9 +61,14 @@ def position(request):
                     int(volume) * assets[asset_name]["price"]
                 )
         elif assets[asset_name]["price"]:
-            asset_classes[assets[asset_name]["asset_class"]] = {
-                "value": (assets[asset_name]["price"] * int(volume))
-            }
+            if order.asset_type == "RF":
+                asset_classes[assets[asset_name]["asset_class"]] = {
+                    "value": assets[asset_name]["price"]
+                }
+            else:
+                asset_classes[assets[asset_name]["asset_class"]] = {
+                    "value": (assets[asset_name]["price"] * int(volume))
+                }
 
     df = pd.DataFrame(assets.values())
 
@@ -133,7 +138,7 @@ def order(request, id=None):
 
             if data.get("assetType") == "RF":
                 order = Order(
-                    name=data.get("name"),
+                    name=data.get("name") + " " + str(data.get("maturity")),
                     broker=data.get("broker"),
                     asset_type=data.get("assetType"),
                     order_type=data.get("orderType"),
