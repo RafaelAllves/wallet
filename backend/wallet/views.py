@@ -7,12 +7,17 @@ import pandas as pd
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.db.models import Q
+from django.utils import timezone
 
 
 def position(request):
     user = User.objects.get()
 
-    orders = Order.objects.filter(user=user)
+    orders = Order.objects.filter(
+        Q(user=user)
+        & (Q(asset_type="RF", maturity_date__gte=timezone.now()) | ~Q(asset_type="RF"))
+    )
     assets = {}
     asset_classes = {}
     for order in orders:
