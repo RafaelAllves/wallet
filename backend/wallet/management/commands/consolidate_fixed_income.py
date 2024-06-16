@@ -21,6 +21,9 @@ class Command(BaseCommand):
         user = User.objects.get()
 
         assets = Order.objects.filter(user=user, asset_type="RF")
+        AssetConsolidatedValue.objects.filter(
+            user=user, asset_type="RF", volume=0
+        ).delete()
 
         if tickers:
             assets = Order.objects.filter(name__in=tickers)
@@ -40,32 +43,65 @@ class Command(BaseCommand):
             current_price = asset.price * asset.volume
 
             current = first_order.date
-            while current < current_date and current <= first_order.maturity_date:
-                current_price += current_price * daily_variation
+            while current < current_date:
 
-                consolidated_value = current_price
+                if current <= first_order.maturity_date:
+                    current_price += current_price * daily_variation
 
-                asset_consolidated_value, created = (
-                    AssetConsolidatedValue.objects.get_or_create(
-                        user=user,
-                        name=asset_name,
-                        date=current,
-                        defaults={
-                            "value": consolidated_value,
-                            "volume": asset.volume,
-                            "invested": asset.price * asset.volume,
-                            "asset_type": "RF",
-                        },
+                    consolidated_value = current_price
+
+                    asset_consolidated_value, created = (
+                        AssetConsolidatedValue.objects.get_or_create(
+                            user=user,
+                            name=asset_name,
+                            date=current,
+                            defaults={
+                                "value": consolidated_value,
+                                "volume": asset.volume,
+                                "invested": asset.price * asset.volume,
+                                "asset_type": "RF",
+                            },
+                        )
                     )
-                )
 
-                if not created:
-                    asset_consolidated_value.value = consolidated_value
-                    asset_consolidated_value.volume = asset.volume
-                    asset_consolidated_value.invested = asset.price * asset.volume
-                    asset_consolidated_value.asset_type = "RF"
-                    asset_consolidated_value.save()
+                    if not created:
+                        asset_consolidated_value.value = consolidated_value
+                        asset_consolidated_value.volume = asset.volume
+                        asset_consolidated_value.invested = asset.price * asset.volume
+                        asset_consolidated_value.asset_type = "RF"
+                        asset_consolidated_value.save()
 
-                print(asset_name, current, consolidated_value)
+                    print(asset_name, current, consolidated_value)
 
-                current += timedelta(days=1)
+                    current += timedelta(days=1)
+                else:
+                    profit = current_price - (asset.price * asset.volume)
+                    asset_consolidated_value, created = (
+                        AssetConsolidatedValue.objects.get_or_create(
+                            user=user,
+                            name="profit",
+                            date=current,
+                            defaults={
+                                "value": profit,
+                                "volume": 0,
+                                "invested": 0,
+                                "asset_type": "RF",
+                            },
+                        )
+                    )
+
+                    if not created:
+                        asset_consolidated_value.value = profit
+                        asset_consolidated_value.volume = 0
+                        asset_consolidated_value.invested = 0
+                        asset_consolidated_value.asset_type = "RF"
+                        asset_consolidated_value.save()
+
+                    print(
+                        "profit",
+                        asset_name,
+                        current,
+                        profit,
+                    )
+
+                    current += timedelta(days=1)

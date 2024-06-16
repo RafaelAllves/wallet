@@ -87,7 +87,9 @@ def position_history(request):
     ticker = request.GET.get("ticker")
     asset_type = request.GET.get("class")
     user = User.objects.get()
-    asset_consolidated_values = AssetConsolidatedValue.objects.filter(user=user)
+    asset_consolidated_values = AssetConsolidatedValue.objects.filter(
+        user=user
+    ).exclude(name="profit")
 
     if ticker:
         asset_consolidated_values = asset_consolidated_values.filter(
