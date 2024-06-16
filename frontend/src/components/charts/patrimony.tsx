@@ -39,6 +39,7 @@ export const options = {
       }
     },
     x: {
+      display: false,
       ticks: {
         color: 'white',
       }
@@ -77,14 +78,14 @@ export const Patrimony: React.FC<PatrimonyProps> = ({ data }) => {
     datasets: [
       {
         fill: true,
-        label: 'invested',
+        label: 'Investido',
         data: data.invested,
         borderColor: 'rgb(2, 48, 71)',
         backgroundColor: 'rgba(2, 48, 71, 0.9)',
       },
       {
         fill: true,
-        label: 'gross',
+        label: 'Atual',
         data: data.values,
         borderColor: 'rgb(255, 183, 3)',
         backgroundColor: 'rgba(255, 183, 3, 1)',
