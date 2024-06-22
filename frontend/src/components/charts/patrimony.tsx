@@ -78,7 +78,7 @@ interface PatrimonyProps {
 export const Patrimony: React.FC<PatrimonyProps> = ({ data }) => {
 
   return (
-    <div className="w-full ">
+    <div className="w-full h-full">
       <Line options={options} data={{
         labels: data.labels,
         datasets: [
