@@ -16,6 +16,10 @@ const OrderModal: React.FC<{
     price: order?.[6] || null,
     volume: order?.[7] || null,
     description: order?.[8] || "",
+    interestRate: order?.[9] || "0",
+    maturity: order?.[10] || null,
+    index: order?.[11] || null,
+    fixedIncomeType: order?.[12] || "CDB",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -23,11 +27,13 @@ const OrderModal: React.FC<{
     if (name === "name") {
       setFormData({ ...formData, [name]: value.toUpperCase() });
     } else if (name === "price") {
-      setFormData({ ...formData, [name]: value? Number(value) : null });
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "volume") {
-      setFormData({ ...formData, [name]: value? Number(value) : null });
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
+    } else if (name === "interestRate") {
+      setFormData({ ...formData, [name]: value ? Number(value) : null });
     } else if (name === "orderType") {
-      setFormData({ ...formData, [name]: Number(value)});
+      setFormData({ ...formData, [name]: Number(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -46,7 +52,7 @@ const OrderModal: React.FC<{
         <form className="lg:flex lg:flex-wrap" onSubmit={handleSave}>
 
           <div className="mb-4 lg:w-1/2 p-4">
-            <label htmlFor="broker" className="block text-sm font-semibold mb-2">Selecione a corretora:</label>
+            <label htmlFor="broker" className="block text-sm font-semibold mb-2">Corretora:</label>
             <select id="broker" name="broker" required value={formData.broker} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="Nu Invest">Nu Invest</option>
               <option value="Rico">Rico</option>
@@ -55,11 +61,12 @@ const OrderModal: React.FC<{
           </div>
 
           <div className="mb-4 lg:w-1/2 p-4">
-            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Tipo:</label>
+            <label htmlFor="assetType" className="block text-sm font-semibold mb-2">Classe:</label>
             <select id="assetType" name="assetType" required value={formData.assetType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
               <option value="AC">Ações BR</option>
               <option value="INT">Ativos Internacionais</option>
               <option value="FII">Fundos de Investimento Imobiliário</option>
+              <option value="RF">Renda Fixa</option>
             </select>
           </div>
 
@@ -78,8 +85,8 @@ const OrderModal: React.FC<{
             />
           </div>
 
-          <div className="mb-4 lg:w-1/3 p-4">
-            <label htmlFor="orderType">Operação:</label>
+          <div className="mb-4 lg:w-1/6 p-4">
+            <label htmlFor="orderType" className="block text-sm font-semibold mb-2">Operação:</label>
             <div>
               <input
                 type="radio"
@@ -104,6 +111,20 @@ const OrderModal: React.FC<{
             </div>
           </div>
 
+          {
+            formData?.assetType === 'RF' && (
+              <div className="mb-4 lg:w-2/6 p-4">
+                <label htmlFor="fixedIncomeType" className="block text-sm font-semibold mb-2">Tipo:</label>
+                <select id="fixedIncomeType" name="fixedIncomeType" required value={formData.fixedIncomeType} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+                  <option value="CDB">CDB</option>
+                  <option value="LCA">LCA</option>
+                  <option value="LCI">LCI</option>
+                  <option value="TD">Tesouro Direto</option>
+                </select>
+              </div>
+            )
+          }
+
           <div className="mb-4 lg:w-5/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Data:
@@ -118,7 +139,6 @@ const OrderModal: React.FC<{
               className="w-full px-4 py-2 border rounded-md"
             />
           </div>
-          
           <div className="mb-4 lg:w-4/12 p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Preço:
@@ -149,6 +169,51 @@ const OrderModal: React.FC<{
             />
           </div>
 
+          {
+            formData?.assetType === 'RF' && (
+              <>
+                <div className="mb-4 lg:w-5/12 p-4">
+                  <label htmlFor="maturity" className="block text-sm font-semibold mb-2">
+                    Vencimento:
+                  </label>
+                  <input
+                    type="date"
+                    name="maturity"
+                    id="maturity"
+                    value={formData.maturity}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+                <div className="mb-4 lg:w-4/12 p-4">
+                  <label htmlFor="index" className="block text-sm font-semibold mb-2">Index:</label>
+                  <select id="index" name="index" required value={formData.index} onChange={handleChange} className="w-full px-4 py-2 border rounded-md">
+                    <option value="P">Pré-fixado</option>
+                    <option value="S">Selic</option>
+                    <option value="I">IPCA</option>
+                  </select>
+                </div>
+
+                <div className="mb-4 lg:w-3/12 p-4">
+                  <label htmlFor="name" className="block text-sm font-semibold mb-2">
+                    Taxa:
+                  </label>
+                  <input
+                    type="number"
+                    name="interestRate"
+                    id="interestRate"
+                    value={formData.interestRate}
+                    required
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+              </>
+            )
+          }
+
+
           <div className="mb-4 w-full p-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-2">
               Descrição:
@@ -162,8 +227,6 @@ const OrderModal: React.FC<{
               className="w-full px-4 py-2 border rounded-md"
             />
           </div>
-          
-          
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"

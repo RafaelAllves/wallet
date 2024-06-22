@@ -56,6 +56,7 @@ export default function Home() {
           <option value="All">Tudo</option>
           <option value="AC">Ações</option>
           <option value="FII">FIIs</option>
+          <option value="RF">Renda Fixa</option>
         </select>
       </div>
       <div className="flex justify-around">
