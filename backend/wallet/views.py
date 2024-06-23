@@ -41,8 +41,8 @@ def position(request):
                 "sub_category": "RF",
                 "volume": int(volume),
                 "cost": cost * int(volume),
-                "price": latest_price.value if latest_price else None,
-                "value": latest_price.value if latest_price else None,
+                "price": latest_price.value / int(volume),
+                "value": latest_price.value,
             }
         else:
             latest_price = AssetPrice.objects.filter(ticker=asset_name).last()
