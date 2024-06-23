@@ -1,9 +1,9 @@
 'use client'
+import api from '../services/api';
 import React, { useEffect, useState } from 'react';
 import { Patrimony } from "../components/charts/patrimony";
 import { AssetClasses } from "../components/charts/assetClasses";
 import PositionTable from "../components/positionsTable";
-import axios from 'axios';
 
 
 export default function Home() {
@@ -12,33 +12,36 @@ export default function Home() {
   const [selectedClass, setSelectedClass] = useState<string>('All');
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/position`).then(response => {
+
+    const backendURL = process.env.REACT_APP_BACKEND_URL;
+
+    console.log(`Usando URL do backend: ${backendURL}`);
+    api.get(`/position`).then(response => {
       setDataAssets(response.data)
     })
 
   }, [])
 
   useEffect(() => {
-    // Função para fazer a solicitação HTTP com base na classe selecionada
     const fetchData = async () => {
       try {
-        let url = 'http://127.0.0.1:8000/position-history';
+        let url = '/position-history';
         if (selectedClass !== 'All') {
           url += `?class=${selectedClass}`;
         }
 
-        const response = await axios.get(url);
+        const response = await api.get(url);
         setDataPatrimony(response.data);
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
     };
 
-    fetchData(); // Chama a função ao montar o componente e sempre que selectedClass mudar
+    fetchData();
   }, [selectedClass]);
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value); // Atualiza o estado com a nova opção selecionada
+    setSelectedClass(event.target.value);
   };
 
   return (
