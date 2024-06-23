@@ -13,9 +13,6 @@ export default function Home() {
 
   useEffect(() => {
 
-    const backendURL = process.env.REACT_APP_BACKEND_URL;
-
-    console.log(`Usando URL do backend: ${backendURL}`);
     api.get(`/position`).then(response => {
       setDataAssets(response.data)
     })
@@ -25,11 +22,12 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = '/position-history';
+        const params = new URLSearchParams();
         if (selectedClass !== 'All') {
-          url += `?class=${selectedClass}`;
+          params.append('class', selectedClass);
         }
 
+        const url = `/position-history?${params.toString()}`;
         const response = await api.get(url);
         setDataPatrimony(response.data);
       } catch (error) {
