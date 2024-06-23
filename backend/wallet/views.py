@@ -1,8 +1,6 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from app.models import AssetPrice, Asset
 from wallet.models import AssetConsolidatedValue, Order
-from .models import Order
 import pandas as pd
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -44,6 +42,7 @@ def position(request):
                 "volume": int(volume),
                 "cost": cost * int(volume),
                 "price": latest_price.value if latest_price else None,
+                "value": latest_price.value if latest_price else None,
             }
         else:
             latest_price = AssetPrice.objects.filter(ticker=asset_name).last()
@@ -56,8 +55,10 @@ def position(request):
                 "volume": int(volume),
                 "cost": cost * int(volume),
                 "price": latest_price.close if latest_price else None,
+                "value": (int(volume) * latest_price.close) if latest_price else None,
             }
-
+        if asset_type:
+            continue
         if (
             assets[asset_name]["asset_class"] in asset_classes
             and assets[asset_name]["price"]
@@ -79,6 +80,8 @@ def position(request):
                 asset_classes[assets[asset_name]["asset_class"]] = {
                     "value": (assets[asset_name]["price"] * int(volume))
                 }
+    if asset_type:
+        asset_classes = assets
 
     df = pd.DataFrame(assets.values())
 
