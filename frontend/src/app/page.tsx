@@ -12,20 +12,22 @@ export default function Home() {
   const [selectedClass, setSelectedClass] = useState<string>('All');
 
   useEffect(() => {
+    const params = new URLSearchParams();
+    if (selectedClass !== 'All') params.append('class', selectedClass);
 
-    api.get(`/position`).then(response => {
+    const url = `/position?${params.toString()}`;
+
+    api.get(url).then(response => {
       setDataAssets(response.data)
     })
 
-  }, [])
+  }, [selectedClass])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const params = new URLSearchParams();
-        if (selectedClass !== 'All') {
-          params.append('class', selectedClass);
-        }
+        if (selectedClass !== 'All') params.append('class', selectedClass);
 
         const url = `/position-history?${params.toString()}`;
         const response = await api.get(url);

@@ -13,11 +13,16 @@ from django.utils import timezone
 
 def position(request):
     user = User.objects.get()
+    asset_type = request.GET.get("class")
 
     orders = Order.objects.filter(
         Q(user=user)
         & (Q(asset_type="RF", maturity_date__gte=timezone.now()) | ~Q(asset_type="RF"))
     )
+
+    if asset_type:
+        orders = orders.filter(asset_type=asset_type.upper())
+
     assets = {}
     asset_classes = {}
     for order in orders:
