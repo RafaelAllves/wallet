@@ -20,6 +20,48 @@ interface AssetClassesProps {
   }
 }
 
+const colors = [
+  // Grupo Original
+  'rgba(255, 99, 132, 1)', // Vermelho
+  'rgba(54, 162, 235, 1)', // Azul
+  'rgba(255, 206, 86, 1)', // Amarelo
+  'rgba(75, 192, 192, 1)', // Ciano
+  'rgba(153, 102, 255, 1)', // Violeta
+  'rgba(255, 159, 64, 1)', // Laranja
+
+  // Grupo Mais Escuro
+  'rgba(230, 69, 102, 1)', // Vermelho
+  'rgba(24, 132, 205, 1)', // Azul
+  'rgba(225, 176, 46, 1)', // Amarelo
+  'rgba(45, 162, 162, 1)', // Ciano
+  'rgba(123, 72, 225, 1)', // Violeta
+  'rgba(225, 129, 34, 1)', // Laranja
+
+  // Grupo Mais Claro
+  'rgba(255, 129, 162, 1)', // Vermelho
+  'rgba(84, 192, 265, 1)', // Azul
+  'rgba(255, 236, 116, 1)', // Amarelo
+  'rgba(105, 222, 222, 1)', // Ciano
+  'rgba(183, 132, 275, 1)', // Violeta
+  'rgba(255, 189, 94, 1)', // Laranja
+
+  // Grupo Saturado
+  'rgba(255, 89, 122, 1)', // Vermelho
+  'rgba(54, 142, 225, 1)', // Azul
+  'rgba(255, 196, 76, 1)', // Amarelo
+  'rgba(75, 172, 172, 1)', // Ciano
+  'rgba(153, 92, 245, 1)', // Violeta
+  'rgba(255, 139, 54, 1)', // Laranja
+
+  // Grupo Menos Saturado
+  'rgba(255, 149, 182, 1)', // Vermelho
+  'rgba(104, 202, 255, 1)', // Azul
+  'rgba(255, 246, 146, 1)', // Amarelo
+  'rgba(125, 232, 232, 1)', // Ciano
+  'rgba(203, 152, 255, 1)', // Violeta
+  'rgba(255, 209, 124, 1)', // Laranja
+]
+
 export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => {
 
   if (!asset_classes) return;
@@ -34,22 +76,8 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => 
               label: 'Valor Acumulado',
               data: Object.values(asset_classes).map(e => e.value),
 
-              backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
+              backgroundColor: colors,
+              borderColor: colors,
               borderWidth: 1,
             },
           ],
@@ -58,6 +86,7 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => 
         options={{
           plugins: {
             legend: {
+              display: false,
               labels: {
                 color: 'white',
               },
