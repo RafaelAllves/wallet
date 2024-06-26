@@ -37,8 +37,8 @@ def position(request):
             assets[asset_name] = {
                 "name": asset_name,
                 "asset_class": "RF",
-                "category": "RF",
-                "sub_category": "RF",
+                "category": order.index,
+                "sub_category": order.fixed_income_type,
                 "volume": int(volume),
                 "cost": cost * int(volume),
                 "price": latest_price.value / int(volume),
