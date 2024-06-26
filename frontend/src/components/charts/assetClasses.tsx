@@ -3,6 +3,7 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -67,7 +68,7 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => 
   if (!asset_classes) return;
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ position: 'relative' }}>
       <Doughnut
         data={{
           labels: Object.keys(asset_classes),
@@ -94,6 +95,24 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => 
           },
         }}
       />
+      <button
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 10,
+          backgroundColor: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onClick={() => { console.log('Clicou no botão de alternância') }}
+      >
+        <SwapHorizIcon style={{ color: 'white', fontSize: '48px' }} />
+      </button>
     </div>
   )
 }
