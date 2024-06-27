@@ -98,24 +98,30 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ data }) => {
           },
         }}
       />
-      <button
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10,
-          backgroundColor: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        onClick={handleDataChange}
-      >
-        <SwapHorizIcon style={{ color: 'white', fontSize: '48px' }} />
-      </button>
+
+      {
+        data?.length > 1 && (
+          <button
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={handleDataChange}
+          >
+            <SwapHorizIcon style={{ color: 'white', fontSize: '48px' }} />
+          </button>
+
+        )
+      }
     </div>
   )
 }
