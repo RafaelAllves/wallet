@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
+import api from '../services/api';
 import OrderModal from './modals/order'
 interface OrdersTableProps {
   data: (string | number | null)[][];
@@ -25,7 +25,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
   };
 
   const updateOrder = (data: any) => {
-    axios.patch(`http://127.0.0.1:8000/order/${data?.id}`, data)
+    api.patch(`/order/${data?.id}`, data)
       .then(response => {
         getData(null)
         alert('Boleta atualizada com sucesso')
@@ -36,7 +36,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data, getData }) => {
   };
 
   const handleDelete = (id: string | number | null) => {
-    axios.delete(`http://127.0.0.1:8000/order/${id}`)
+    api.delete(`/order/${id}`)
       .then(response => {
         getData(null)
         alert('Boleta deletada com sucesso')

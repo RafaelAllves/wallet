@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import OrdersTable from '../../components/ordersTable';
 import OrderModal from '../../components/modals/order'
-import axios from 'axios';
+import api from '../../services/api';
 
 const OrdersPage: React.FC<any> = ({ params }) => {
   const { ticker } = params;
@@ -19,13 +19,13 @@ const OrdersPage: React.FC<any> = ({ params }) => {
   };
 
   const getData = (ticker: string | null) => {
-    axios.get(`http://127.0.0.1:8000/orders`, {params: {ticker}}).then(response => {
+    api.get(`/orders`, { params: { ticker } }).then(response => {
       setDataOrders(response.data)
     })
   }
 
   const saveData = (data: any) => {
-    axios.post(`http://127.0.0.1:8000/order`, data)
+    api.post(`/order`, data)
       .then(response => {
         getData(null)
         alert('Boleta criada com sucesso')
@@ -35,7 +35,7 @@ const OrdersPage: React.FC<any> = ({ params }) => {
       })
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     getData(ticker)
   }, [ticker])
 

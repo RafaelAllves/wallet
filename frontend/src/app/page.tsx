@@ -1,9 +1,9 @@
 'use client'
+import api from '../services/api';
 import React, { useEffect, useState } from 'react';
 import { Patrimony } from "../components/charts/patrimony";
-import { AssetClasses } from "../components/charts/assetClasses";
+import { DynamicDoughnut } from "../components/charts/dynamicDoughnut";
 import PositionTable from "../components/positionsTable";
-import axios from 'axios';
 
 
 export default function Home() {
@@ -12,33 +12,36 @@ export default function Home() {
   const [selectedClass, setSelectedClass] = useState<string>('All');
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/position`).then(response => {
+    const params = new URLSearchParams();
+    if (selectedClass !== 'All') params.append('class', selectedClass);
+
+    const url = `/position?${params.toString()}`;
+
+    api.get(url).then(response => {
       setDataAssets(response.data)
     })
 
-  }, [])
+  }, [selectedClass])
 
   useEffect(() => {
-    // Função para fazer a solicitação HTTP com base na classe selecionada
     const fetchData = async () => {
       try {
-        let url = 'http://127.0.0.1:8000/position-history';
-        if (selectedClass !== 'All') {
-          url += `?class=${selectedClass}`;
-        }
+        const params = new URLSearchParams();
+        if (selectedClass !== 'All') params.append('class', selectedClass);
 
-        const response = await axios.get(url);
+        const url = `/position-history?${params.toString()}`;
+        const response = await api.get(url);
         setDataPatrimony(response.data);
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
     };
 
-    fetchData(); // Chama a função ao montar o componente e sempre que selectedClass mudar
+    fetchData();
   }, [selectedClass]);
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value); // Atualiza o estado com a nova opção selecionada
+    setSelectedClass(event.target.value);
   };
 
   return (
@@ -61,7 +64,7 @@ export default function Home() {
       </div>
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <AssetClasses asset_classes={dataAssets.asset_classes} />
+          <DynamicDoughnut data={[dataAssets.asset_classes, dataAssets.categories]} />
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex flex-grow items-center justify-center">

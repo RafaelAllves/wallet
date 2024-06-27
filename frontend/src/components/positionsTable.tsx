@@ -51,7 +51,7 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
                 <td className="px-4 py-2 text-center">{sub_category || '-'}</td>
                 <td className="px-4 py-2 text-center">{volume || '-'}</td>
                 <td className="px-4 py-2 text-center">{(parseFloat(cost.toString()) / Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
-                <td className="px-4 py-2 text-center">{price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
+                <td className="px-4 py-2 text-center">{Number(price)?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
                 <td className="px-4 py-2 text-center">{(Number(price) * Number(volume)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'}</td>
               </tr>
             )

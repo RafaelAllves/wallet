@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import AssetTable from '../../components/assetTable';
-import axios from 'axios';
+import api from '../../services/api';
 
 const AssetsPage: React.FC = () => {
   const [assets, setAssets] = useState<any>([]);
-  
-  useEffect(()=> {
-    axios.get('http://127.0.0.1:8000/assets').then(response => {
+
+  useEffect(() => {
+    api.get('/assets').then(response => {
       setAssets(response.data)
     })
   }, [])

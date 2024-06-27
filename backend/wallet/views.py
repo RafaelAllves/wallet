@@ -1,8 +1,6 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from app.models import AssetPrice, Asset
 from wallet.models import AssetConsolidatedValue, Order
-from .models import Order
 import pandas as pd
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -11,15 +9,30 @@ from django.db.models import Q
 from django.utils import timezone
 
 
+INDEX_CHOICES = [
+    ("P", "Prefixed"),
+    ("S", "Selic"),
+    ("I", "IPCA"),
+]
+
+index_names = {code: name for code, name in INDEX_CHOICES}
+
+
 def position(request):
     user = User.objects.get()
+    asset_type = request.GET.get("class")
 
     orders = Order.objects.filter(
         Q(user=user)
         & (Q(asset_type="RF", maturity_date__gte=timezone.now()) | ~Q(asset_type="RF"))
     )
+
+    if asset_type:
+        orders = orders.filter(asset_type=asset_type.upper())
+
     assets = {}
     asset_classes = {}
+    categories = {}
     for order in orders:
         asset_name = order.name
         volume = order.volume
@@ -30,15 +43,17 @@ def position(request):
             assets[asset_name]["cost"] += cost * int(volume)
         elif order.asset_type == "RF":
             latest_price = AssetConsolidatedValue.objects.filter(name=asset_name).last()
+            index_full_name = index_names.get(order.index, order.index)
 
             assets[asset_name] = {
                 "name": asset_name,
                 "asset_class": "RF",
-                "category": "RF",
-                "sub_category": "RF",
+                "category": index_full_name,
+                "sub_category": order.fixed_income_type,
                 "volume": int(volume),
                 "cost": cost * int(volume),
-                "price": latest_price.value if latest_price else None,
+                "price": latest_price.value / int(volume),
+                "value": latest_price.value,
             }
         else:
             latest_price = AssetPrice.objects.filter(ticker=asset_name).last()
@@ -51,8 +66,23 @@ def position(request):
                 "volume": int(volume),
                 "cost": cost * int(volume),
                 "price": latest_price.close if latest_price else None,
+                "value": (int(volume) * latest_price.close) if latest_price else None,
             }
 
+        if assets[asset_name]["price"]:
+            added_value = (
+                assets[asset_name]["value"]
+                if order.asset_type == "RF"
+                else int(volume) * assets[asset_name]["price"]
+            )
+
+            if assets[asset_name]["category"] in categories:
+                categories[assets[asset_name]["category"]]["value"] += added_value
+            else:
+                categories[assets[asset_name]["category"]] = {"value": added_value}
+
+        if asset_type:
+            continue
         if (
             assets[asset_name]["asset_class"] in asset_classes
             and assets[asset_name]["price"]
@@ -74,11 +104,18 @@ def position(request):
                 asset_classes[assets[asset_name]["asset_class"]] = {
                     "value": (assets[asset_name]["price"] * int(volume))
                 }
+    if asset_type:
+        asset_classes = assets
 
     df = pd.DataFrame(assets.values())
 
     return JsonResponse(
-        {"assets": df.values.tolist(), "asset_classes": asset_classes}, safe=False
+        {
+            "assets": df.values.tolist(),
+            "asset_classes": asset_classes,
+            "categories": categories,
+        },
+        safe=False,
     )
 
 

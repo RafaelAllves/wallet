@@ -18,7 +18,7 @@ const OrderModal: React.FC<{
     description: order?.[8] || "",
     interestRate: order?.[9] || "0",
     maturity: order?.[10] || null,
-    index: order?.[11] || null,
+    index: order?.[11] || "P",
     fixedIncomeType: order?.[12] || "CDB",
   });
 
