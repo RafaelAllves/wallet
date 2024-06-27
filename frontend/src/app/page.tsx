@@ -2,7 +2,7 @@
 import api from '../services/api';
 import React, { useEffect, useState } from 'react';
 import { Patrimony } from "../components/charts/patrimony";
-import { AssetClasses } from "../components/charts/assetClasses";
+import { DynamicDoughnut } from "../components/charts/dynamicDoughnut";
 import PositionTable from "../components/positionsTable";
 
 
@@ -64,7 +64,7 @@ export default function Home() {
       </div>
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <AssetClasses data={[dataAssets.asset_classes, dataAssets.categories]} />
+          <DynamicDoughnut data={[dataAssets.asset_classes, dataAssets.categories]} />
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex flex-grow items-center justify-center">

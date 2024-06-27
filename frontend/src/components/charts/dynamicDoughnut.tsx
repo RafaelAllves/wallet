@@ -14,7 +14,7 @@ interface Data {
 }
 
 
-interface AssetClassesProps {
+interface DynamicDoughnutProps {
   data: Data[]
 }
 
@@ -60,7 +60,7 @@ const colors = [
   'rgba(255, 209, 124, 1)', // Laranja
 ]
 
-export const AssetClasses: React.FC<AssetClassesProps> = ({ data }) => {
+export const DynamicDoughnut: React.FC<DynamicDoughnutProps> = ({ data }) => {
   const [dataSelected, setDataSelected] = useState<number>(0);
 
   function handleDataChange() {
