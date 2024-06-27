@@ -1,24 +1,21 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface AssetClassesProps {
-  asset_classes: {
-    AC: {
-      value: number
-    },
-    FII: {
-      value: number
-    },
-    INT: {
-      value: number
-    }
+interface Data {
+  [key: string]: {
+    value: number
   }
+}
+
+
+interface AssetClassesProps {
+  data: Data[]
 }
 
 const colors = [
@@ -63,19 +60,25 @@ const colors = [
   'rgba(255, 209, 124, 1)', // Laranja
 ]
 
-export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => {
+export const AssetClasses: React.FC<AssetClassesProps> = ({ data }) => {
+  const [dataSelected, setDataSelected] = useState<number>(0);
 
-  if (!asset_classes) return;
+  function handleDataChange() {
+    if (dataSelected === data.length - 1) return setDataSelected(0);
+    setDataSelected(dataSelected + 1);
+  }
+
+  if (!data || !data[0]) return;
 
   return (
     <div className="w-full" style={{ position: 'relative' }}>
       <Doughnut
         data={{
-          labels: Object.keys(asset_classes),
+          labels: Object.keys(data[dataSelected]),
           datasets: [
             {
               label: 'Valor Acumulado',
-              data: Object.values(asset_classes).map(e => e.value),
+              data: Object.values(data[dataSelected]).map(e => e.value),
 
               backgroundColor: colors,
               borderColor: colors,
@@ -109,7 +112,7 @@ export const AssetClasses: React.FC<AssetClassesProps> = ({ asset_classes }) => 
           alignItems: 'center',
           justifyContent: 'center',
         }}
-        onClick={() => { console.log('Clicou no botão de alternância') }}
+        onClick={handleDataChange}
       >
         <SwapHorizIcon style={{ color: 'white', fontSize: '48px' }} />
       </button>

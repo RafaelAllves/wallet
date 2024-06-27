@@ -64,7 +64,7 @@ export default function Home() {
       </div>
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <AssetClasses asset_classes={dataAssets.asset_classes} />
+          <AssetClasses data={[dataAssets.asset_classes, dataAssets.categories]} />
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex flex-grow items-center justify-center">
