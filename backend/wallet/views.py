@@ -9,6 +9,15 @@ from django.db.models import Q
 from django.utils import timezone
 
 
+INDEX_CHOICES = [
+    ("P", "Prefixed"),
+    ("S", "Selic"),
+    ("I", "IPCA"),
+]
+
+index_names = {code: name for code, name in INDEX_CHOICES}
+
+
 def position(request):
     user = User.objects.get()
     asset_type = request.GET.get("class")
@@ -23,6 +32,7 @@ def position(request):
 
     assets = {}
     asset_classes = {}
+    categories = {}
     for order in orders:
         asset_name = order.name
         volume = order.volume
@@ -33,11 +43,12 @@ def position(request):
             assets[asset_name]["cost"] += cost * int(volume)
         elif order.asset_type == "RF":
             latest_price = AssetConsolidatedValue.objects.filter(name=asset_name).last()
+            index_full_name = index_names.get(order.index, order.index)
 
             assets[asset_name] = {
                 "name": asset_name,
                 "asset_class": "RF",
-                "category": order.index,
+                "category": index_full_name,
                 "sub_category": order.fixed_income_type,
                 "volume": int(volume),
                 "cost": cost * int(volume),
@@ -57,6 +68,19 @@ def position(request):
                 "price": latest_price.close if latest_price else None,
                 "value": (int(volume) * latest_price.close) if latest_price else None,
             }
+
+        if assets[asset_name]["price"]:
+            added_value = (
+                assets[asset_name]["value"]
+                if order.asset_type == "RF"
+                else int(volume) * assets[asset_name]["price"]
+            )
+
+            if assets[asset_name]["category"] in categories:
+                categories[assets[asset_name]["category"]]["value"] += added_value
+            else:
+                categories[assets[asset_name]["category"]] = {"value": added_value}
+
         if asset_type:
             continue
         if (
@@ -86,7 +110,12 @@ def position(request):
     df = pd.DataFrame(assets.values())
 
     return JsonResponse(
-        {"assets": df.values.tolist(), "asset_classes": asset_classes}, safe=False
+        {
+            "assets": df.values.tolist(),
+            "asset_classes": asset_classes,
+            "categories": categories,
+        },
+        safe=False,
     )
 
 
