@@ -1,9 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import api from '../../services/api';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isClient, setIsClient] = useState(false);
 
@@ -11,10 +13,27 @@ function LoginPage() {
     setIsClient(true);
   }, []);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isClient) return;
-    console.log('Login realizado com:', email, password);
+
+    try {
+
+      const response = await api.post(`/login`, { username, password });
+
+      if (response.status === 200) {
+        window.location.href = 'http://localhost:3000';
+      } else {
+        throw new Error('Falha no login');
+      }
+    } catch (error) {
+
+      if (axios.isAxiosError(error)) {
+        alert(error?.response?.data);
+      }
+
+      console.error('Erro ao realizar login:', error);
+    }
   };
 
   return (
@@ -22,12 +41,12 @@ function LoginPage() {
       <form onSubmit={handleLogin} className="p-10 bg-gray-700 rounded-lg shadow-md max-w-lg w-full">
         <h2 className="text-2xl font-semibold text-center text-white mb-8">Login</h2>
         <div className="mb-6">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-300">Email:</label>
+          <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-300">Usuário:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
           />
