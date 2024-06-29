@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from app import views as asset_views
 from wallet import views as wallet_views
+from user import views as user_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,4 +30,5 @@ urlpatterns = [
     path("order", wallet_views.order, name="create_order"),
     path("position", wallet_views.position, name="position"),
     path("position-history", wallet_views.position_history, name="position_history"),
+    path("login", user_views.login_view, name="login"),
 ]
