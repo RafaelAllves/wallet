@@ -1,39 +1,24 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import api from '../../services/api';
+import { useAuth } from '@/services/authContext';
 
-function LoginPage() {
+const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isClient, setIsClient] = useState(false);
+  const { login, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    if (isAuthenticated) {
+      window.location.href = '/';
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isClient) return;
 
-    try {
+    await login(username, password);
 
-      const response = await api.post(`/login`, { username, password });
-
-      if (response.status === 200) {
-        window.location.href = 'http://localhost:3000';
-      } else {
-        throw new Error('Falha no login');
-      }
-    } catch (error) {
-
-      if (axios.isAxiosError(error)) {
-        alert(error?.response?.data);
-      }
-
-      console.error('Erro ao realizar login:', error);
-    }
   };
 
   return (
