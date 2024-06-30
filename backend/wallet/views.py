@@ -33,6 +33,8 @@ def position(request):
     assets = {}
     asset_classes = {}
     categories = {}
+
+    # TODO: Refatorar para ser mais eficiente
     for order in orders:
         asset_name = order.name
         volume = order.volume
@@ -83,6 +85,8 @@ def position(request):
 
         if asset_type:
             continue
+
+        #  TODO: Refatorar para não repetir código
         if (
             assets[asset_name]["asset_class"] in asset_classes
             and assets[asset_name]["price"]
