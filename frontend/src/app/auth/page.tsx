@@ -1,23 +1,20 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import { FormEvent } from 'react'
 import { useAuth } from '@/services/authContext';
 
-const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, isAuthenticated } = useAuth();
+const LoginPage = () => {
+  const { login } = useAuth();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      window.location.href = '/';
-    }
-  }, [isAuthenticated]);
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget)
+    const username = formData.get('username')?.toString() ?? '';
+    const password = formData.get('password')?.toString() ?? '';
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const response = await login(username, password);
 
-    await login(username, password);
+    if (response) window.location.href = '/';
 
   };
 
@@ -30,8 +27,7 @@ const LoginPage: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            name='username'
             required
             className="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
           />
@@ -41,8 +37,7 @@ const LoginPage: React.FC = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
             required
             className="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
           />
