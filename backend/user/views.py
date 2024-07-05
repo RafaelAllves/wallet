@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
@@ -15,19 +15,24 @@ def login_view(request):
         if user is not None:
             login(request, user)
             token, created = Token.objects.get_or_create(user=user)
-            return HttpResponse(
-                json.dumps(
-                    {
-                        "token": token.key,
-                        "user": {
-                            "id": user.id,
-                            "username": user.username,
-                            "email": user.email,
-                        },
-                    }
-                ),
-                content_type="application/json",
+            response = JsonResponse(
+                {
+                    "token": token.key,
+                    "user": {
+                        "id": user.id,
+                        "username": user.username,
+                        "email": user.email,
+                    },
+                }
             )
+            response.set_cookie(
+                key="currentUser",
+                value=token.key,
+                httponly=True,
+                samesite="Lax",
+                secure=False,
+            )
+            return response
         else:
             return HttpResponseBadRequest("Usuário ou senha inválidos")
     return HttpResponseBadRequest("Método não permitido")
