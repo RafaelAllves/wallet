@@ -47,10 +47,16 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
