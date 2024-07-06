@@ -22,7 +22,7 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
     <div>
       <input
         type="text"
-        placeholder="Buscar ativos por ticker"
+        placeholder="Buscar ativos por nome"
         className="mb-4 p-2 border rounded-md text-black"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -30,7 +30,7 @@ const PositionTable: React.FC<PositionTableProps> = ({ assets }) => {
       <table className="table-auto w-full">
         <thead>
           <tr>
-            <th className="px-4 py-2">Ticker</th>
+            <th className="px-4 py-2">Nome</th>
             <th className="px-4 py-2">Classe</th>
             <th className="px-4 py-2">Categoria</th>
             <th className="px-4 py-2">Subcategoria</th>
