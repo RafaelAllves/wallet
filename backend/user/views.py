@@ -28,9 +28,9 @@ def login_view(request):
             response.set_cookie(
                 key="currentUser",
                 value=token.key,
-                httponly=True,
                 samesite="Lax",
-                secure=False,
+                SameSite=None,
+                secure=True,
             )
             return response
         else:
