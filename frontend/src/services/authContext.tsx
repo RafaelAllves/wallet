@@ -26,14 +26,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await api.post<{ token: string; user: User }>('/login', { username, password });
       const { token, user } = response.data;
 
-      localStorage.setItem('token', token);
-
       setUser(user);
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      return user;
+
+      return true;
     } catch (error) {
       console.error('Erro ao realizar login:', error);
+      return false;
     }
   };
 
