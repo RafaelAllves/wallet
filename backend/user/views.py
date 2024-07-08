@@ -29,7 +29,6 @@ def login_view(request):
                 key="currentUser",
                 value=token.key,
                 samesite="Lax",
-                SameSite=None,
                 secure=True,
             )
             return response
