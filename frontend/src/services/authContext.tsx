@@ -38,20 +38,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
     setUser(null);
-
     delete api.defaults.headers.common['Authorization'];
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // TODO: fetch user data
-      setUser({ id: 1, username: 'admin', email: '' });
-    }
-  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
