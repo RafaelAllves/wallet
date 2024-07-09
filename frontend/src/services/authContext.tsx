@@ -37,9 +37,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    delete api.defaults.headers.common['Authorization'];
+  const logout = async () => {
+    try {
+      await api.post('/logout');
+      delete api.defaults.headers.common['Authorization'];
+      setUser(null);
+    } catch (error) {
+      console.error('Erro ao realizar logout:', error);
+    }
   };
 
   return (
