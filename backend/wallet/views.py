@@ -162,8 +162,9 @@ def position_history(request):
 
 
 def orders(request):
+    user = request.user
     ticker = request.GET.get("ticker")
-    orders = Order.objects.filter()
+    orders = Order.objects.filter(user=user)
 
     if ticker:
         orders = orders.filter(name=ticker.upper())
