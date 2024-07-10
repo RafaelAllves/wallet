@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponseBadRequest
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework.authtoken.models import Token
 
 
@@ -28,11 +28,21 @@ def login_view(request):
             response.set_cookie(
                 key="currentUser",
                 value=token.key,
-                httponly=True,
                 samesite="Lax",
-                secure=False,
+                secure=True,
             )
             return response
         else:
             return HttpResponseBadRequest("Usuário ou senha inválidos")
     return HttpResponseBadRequest("Método não permitido")
+
+
+@csrf_exempt
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        response = JsonResponse({"success": "Logout realizado com sucesso"})
+        response.delete_cookie("currentUser")
+        return response
+    else:
+        return HttpResponseBadRequest("Método não permitido")

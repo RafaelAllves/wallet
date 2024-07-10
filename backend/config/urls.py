@@ -22,13 +22,16 @@ from wallet import views as wallet_views
 from user import views as user_views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("assets", asset_views.asset, name="asset"),
-    path("asset/<str:ticker>/", asset_views.asset_prices, name="prices"),
-    path("orders/", wallet_views.orders, name="orders"),
-    path("order/<str:id>", wallet_views.order, name="order"),
-    path("order", wallet_views.order, name="create_order"),
-    path("position", wallet_views.position, name="position"),
-    path("position-history", wallet_views.position_history, name="position_history"),
-    path("login", user_views.login_view, name="login"),
+    path("api/admin/", admin.site.urls),
+    path("api/assets", asset_views.asset, name="asset"),
+    path("api/asset/<str:ticker>/", asset_views.asset_prices, name="prices"),
+    path("api/orders/", wallet_views.orders, name="orders"),
+    path("api/order/<str:id>", wallet_views.order, name="order"),
+    path("api/order", wallet_views.order, name="create_order"),
+    path("api/position", wallet_views.position, name="position"),
+    path(
+        "api/position-history", wallet_views.position_history, name="position_history"
+    ),
+    path("api/login", user_views.login_view, name="login"),
+    path("api/logout", user_views.logout_view, name="logout"),
 ]

@@ -26,32 +26,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await api.post<{ token: string; user: User }>('/login', { username, password });
       const { token, user } = response.data;
 
-      localStorage.setItem('token', token);
-
       setUser(user);
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      return user;
+
+      return true;
     } catch (error) {
       console.error('Erro ao realizar login:', error);
+      return false;
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-
-    delete api.defaults.headers.common['Authorization'];
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // TODO: fetch user data
-      setUser({ id: 1, username: 'admin', email: '' });
+  const logout = async () => {
+    try {
+      await api.post('/logout');
+      delete api.defaults.headers.common['Authorization'];
+      setUser(null);
+    } catch (error) {
+      console.error('Erro ao realizar logout:', error);
     }
-  }, []);
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
