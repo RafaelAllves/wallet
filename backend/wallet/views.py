@@ -19,7 +19,7 @@ index_names = {code: name for code, name in INDEX_CHOICES}
 
 
 def position(request):
-    user = User.objects.get()
+    user = request.user
     asset_type = request.GET.get("class")
 
     orders = Order.objects.filter(
@@ -127,7 +127,7 @@ def position_history(request):
 
     ticker = request.GET.get("ticker")
     asset_type = request.GET.get("class")
-    user = User.objects.get()
+    user = request.user
     asset_consolidated_values = AssetConsolidatedValue.objects.filter(
         user=user
     ).exclude(name="profit")
@@ -179,7 +179,7 @@ def orders(request):
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
 def order(request, id=None):
-    user = User.objects.get()
+    user = request.user
     if request.method == "POST":
         try:
 
