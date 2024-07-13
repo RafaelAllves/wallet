@@ -19,7 +19,9 @@ index_names = {code: name for code, name in INDEX_CHOICES}
 
 
 def position(request):
-    user = User.objects.get()
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Usuário não autenticado"}, status=401)
     asset_type = request.GET.get("class")
 
     orders = Order.objects.filter(
@@ -127,7 +129,9 @@ def position_history(request):
 
     ticker = request.GET.get("ticker")
     asset_type = request.GET.get("class")
-    user = User.objects.get()
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Usuário não autenticado"}, status=401)
     asset_consolidated_values = AssetConsolidatedValue.objects.filter(
         user=user
     ).exclude(name="profit")
@@ -163,6 +167,8 @@ def position_history(request):
 
 def orders(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Usuário não autenticado"}, status=401)
     ticker = request.GET.get("ticker")
     orders = Order.objects.filter(user=user)
 
@@ -179,7 +185,9 @@ def orders(request):
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for demonstration purposes.
 def order(request, id=None):
-    user = User.objects.get()
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Usuário não autenticado"}, status=401)
     if request.method == "POST":
         try:
 
@@ -236,11 +244,7 @@ def order(request, id=None):
 
     elif request.method == "GET":
         try:
-            print("aaaaaa")
             order = Order.objects.get(id=id)
-            print(order.user)
-            # data = json.loads(response.text)
-            # df = pd.DataFrame(order.values())
             return JsonResponse({"order": order}, status=200)
 
         except Exception as e:
