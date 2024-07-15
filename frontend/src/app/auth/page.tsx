@@ -43,6 +43,9 @@ const LoginPage = () => {
           />
         </div>
         <button type="submit" className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Entrar</button>
+        <div className="mt-4">
+          <a href="/auth/register" className="text-blue-300 hover:text-blue-500">Novo cadastro</a>
+        </div>
       </form>
     </div>
   );
