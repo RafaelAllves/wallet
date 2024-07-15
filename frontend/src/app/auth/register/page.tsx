@@ -1,14 +1,27 @@
 'use client'
 
 import { FormEvent } from 'react'
+import api from '@/services/api';
+
 
 const Register: React.FC = () => {
   const handleCadastro = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget)
-    const username = formData.get('username')?.toString() ?? '';
-    const email = formData.get('email')?.toString() ?? '';
-    const password = formData.get('password')?.toString() ?? '';
+
+    try {
+      const formData = new FormData(event.currentTarget)
+      const username = formData.get('username')?.toString() ?? '';
+      const email = formData.get('email')?.toString() ?? '';
+      const password = formData.get('password')?.toString() ?? '';
+
+      await api.post('/register', { username, password, email });
+
+      window.location.href = '/';
+
+    } catch (error) {
+
+    }
+
 
   };
 
