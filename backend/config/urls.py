@@ -34,4 +34,5 @@ urlpatterns = [
     ),
     path("api/login", user_views.login_view, name="login"),
     path("api/logout", user_views.logout_view, name="logout"),
+    path("api/register", user_views.register, name="register"),
 ]
