@@ -8,7 +8,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const { logout } = useAuth();
 
-  if (pathname === '/auth') return null;
+  if (pathname === '/auth' || pathname === '/auth/register') return null;
 
   const handleLogout = async () => {
     await logout();
