@@ -172,6 +172,9 @@ def orders(request):
     ticker = request.GET.get("ticker")
     orders = Order.objects.filter(user=user)
 
+    if not orders or not orders.exists():
+        return JsonResponse([], safe=False)
+
     if ticker:
         orders = orders.filter(name=ticker.upper())
 
