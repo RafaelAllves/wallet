@@ -15,18 +15,25 @@ const Navbar = () => {
     window.location.href = '/auth';
   };
 
+  const getLinkClassName = (path: string): string => {
+    return pathname === path ? "underline" : "";
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-gray-800 p-4 text-white z-20">
+    <nav className="fixed top-0 left-0 right-0 bg-gray-800 p-4 z-20">
       <div className="max-w-screen-xl container mx-auto flex justify-between items-center">
-        <Link href="/">
+        <Link href="/" className={getLinkClassName("/")}>
           Home
         </Link>
 
         <div className="space-x-4">
-          <Link href="/orders">Boletas</Link>
-          <Link href="/tickers">Tickers</Link>
-          <button onClick={handleLogout}>Logout</button>
+          <Link href="/orders" className={getLinkClassName("/orders")}>
+            Boletas
+          </Link>
+          <Link href="/tickers" className={getLinkClassName("/tickers")}>
+            Tickers
+          </Link>
+          <button onClick={handleLogout} className="text-white">Logout</button>
         </div>
       </div>
     </nav>
