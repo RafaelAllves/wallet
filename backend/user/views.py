@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 @csrf_exempt
@@ -90,3 +92,17 @@ def register(request):
             return HttpResponseBadRequest(f"Erro ao cadastrar usuário: {str(e)}")
     else:
         return HttpResponseBadRequest("Método não permitido")
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user(request):
+    user = request.user
+    return JsonResponse(
+        {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "name": user.first_name,
+        }
+    )
