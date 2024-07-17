@@ -33,6 +33,9 @@ const Navbar = () => {
           <Link href="/tickers" className={getLinkClassName("/tickers")}>
             Tickers
           </Link>
+          <Link href="/profile" className={getLinkClassName("/profile")}>
+            Profile
+          </Link>
           <button onClick={handleLogout} className="text-white">Logout</button>
         </div>
       </div>
