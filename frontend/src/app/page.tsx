@@ -64,7 +64,10 @@ export default function Home() {
       </div>
       <div className="flex justify-around">
         <div className="flex w-1/5 items-center justify-center">
-          <DynamicDoughnut data={[dataAssets.asset_classes, dataAssets.categories]} />
+          <DynamicDoughnut data={[
+            ...((dataAssets.asset_classes && Object.keys(dataAssets.asset_classes).length > 0) ? [dataAssets.asset_classes] : []),
+            ...((dataAssets.categories && Object.keys(dataAssets.categories).length > 0) ? [dataAssets.categories] : [])
+          ]} />
         </div>
         <div className="flex w-3/5 flex-col gap-4">
           <div className="flex flex-grow items-center justify-center">

@@ -19,9 +19,12 @@ const OrdersPage: React.FC<any> = ({ params }) => {
   };
 
   const getData = (ticker: string | null) => {
-    api.get(`/orders`, { params: { ticker } }).then(response => {
-      setDataOrders(response.data)
-    })
+    api.get(`/orders`, { params: { ticker } })
+      .then(response => {
+        setDataOrders(response.data)
+      }).catch(error => {
+        console.error('Erro ao buscar dados:', error);
+      })
   }
 
   const saveData = (data: any) => {
